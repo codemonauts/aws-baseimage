@@ -5,4 +5,4 @@ echo "> Checcking packer.json for errors..."
 packer validate packer.json
 
 echo "> Checcking Chef cookbooks for errors..."
-cookstyle
+foodcritic -f any ./cookbooks
