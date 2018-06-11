@@ -1,3 +1,10 @@
-package 'tmux' do
-  action :install
-end
+apt_update 'update'
+
+package 'tmux'
+package 'vim'
+package 'apt-transport-https'
+package 'htop'
+package 'less'
+package 'ncdu'
+package 'psmisc'
+package 'tree'
