@@ -22,15 +22,7 @@ cookbook_file '/home/cmonauts/.ssh/authorized_keys' do
   action :create
 end
 
-# Create Systemd Timer to remove ubuntu user on boot
-cookbook_file '/etc/systemd/system/delete-ubuntu-user.timer' do
-  source 'delete-ubuntu-user.timer'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
-
+# Create Systemd service to delete the ubuntu user on reboot
 cookbook_file '/etc/systemd/system/delete-ubuntu-user.service' do
   source 'delete-ubuntu-user.service'
   owner 'root'
