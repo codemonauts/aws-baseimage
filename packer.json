@@ -24,6 +24,7 @@
         "type": "chef-solo",
         "cookbook_paths": ["cookbooks"],
         "run_list": ["common",
+                     "unattended-upgrades",
                      "useraccounts",
                      "aws_codedeploy",
                      "aws_cloudwatch"

@@ -13,6 +13,7 @@ suites:
     run_list:
       - recipe[common]
       - recipe[useraccounts]
+      - recipe[unattended-upgrades]
       - recipe[aws_codedeploy]
       - recipe[aws_cloudwatch]
     attributes:
