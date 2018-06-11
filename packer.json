@@ -27,7 +27,8 @@
                      "unattended-upgrades",
                      "useraccounts",
                      "aws_codedeploy",
-                     "aws_cloudwatch"
+                     "aws_cloudwatch",
+                     "web"
                     ]
       }
   ]
