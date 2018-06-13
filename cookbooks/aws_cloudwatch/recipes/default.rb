@@ -1,5 +1,7 @@
 
-remote_file '/tmp/cloudwatch-installer.py' do
+package 'python'
+
+remote_file "/tmp/cloudwatch-installer.py" do
   source 'https://s3.amazonaws.com//aws-cloudwatch/downloads/latest/awslogs-agent-setup.py'
   owner 'root'
   group 'root'
@@ -22,9 +24,8 @@ cookbook_file '/etc/awslogs/cwlogs.cfg' do
   action :create
 end
 
-
 execute 'install-cloudwatch' do
-  command '/tmp/cloudwatch-installer.py -n -r eu-central-1 -c /etc/awslogs/cwlogs.cfg'
+  command "python /tmp/cloudwatch-installer.py -n -r eu-central-1 -c /etc/awslogs/cwlogs.cfg"
   action :run
 end
 
