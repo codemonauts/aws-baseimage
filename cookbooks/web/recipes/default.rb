@@ -17,8 +17,7 @@ package "php7.0-xml";
 
 # Delete default configuration files
 file_array = ['/etc/nginx/sites-enables/default',
-              '/etc/nginx/sites-available/default',
-              '/etc/php/7.0/fpm/pool.d/www.conf']
+              '/etc/nginx/sites-available/default']
 
 file_array.each do |this_file|
   file this_file do
