@@ -16,5 +16,6 @@ suites:
       - recipe[unattended-upgrades]
       - recipe[aws_codedeploy]
       - recipe[aws_cloudwatch]
+      - recipe[aws_ssm]
       - recipe[web]
     attributes:
