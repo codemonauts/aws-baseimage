@@ -1,15 +1,19 @@
 package "nginx";
 package "nginx-extras";
-package "php7.0-fpm";
-package "php7.0-xml";
-package "php7.0-mysql";
-package "php7.0-mcrypt";
 package "php-imagick";
-package "php7.0-curl";
+package "php-memcached";
+package "php-soap";
+package "php-xml";
 package "php7.0-cli";
+package "php7.0-curl";
+package "php7.0-fpm";
 package "php7.0-gd";
+package "php7.0-intl";
 package "php7.0-mbstring";
+package "php7.0-mcrypt";
+package "php7.0-mysql";
 package "php7.0-opcache";
+package "php7.0-xml";
 
 # Delete default configuration files
 file_array = ['/etc/nginx/sites-enables/default',
