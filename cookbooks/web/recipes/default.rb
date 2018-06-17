@@ -46,3 +46,11 @@ execute 'enable aws-memcache module' do
   command 'phpenmod aws-memcache'
   action :run
 end
+
+service "php7.0-fpm" do
+  action [:stop, :disable]
+end
+
+service "nginx" do
+  action [:stop, :disable]
+end
