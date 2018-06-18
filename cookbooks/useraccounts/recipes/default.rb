@@ -22,6 +22,16 @@ cookbook_file '/home/cmonauts/.ssh/authorized_keys' do
   action :create
 end
 
+# Passwordless sudo for user cmonauts
+package 'sudo'
+
+cookbook_file "/etc/sudoers.d/90-cmonauts" do
+  source "sudoers"
+  mode 0440
+  owner "root"
+  group "root"
+end
+
 # Create Systemd service to delete the ubuntu user on reboot
 cookbook_file '/etc/systemd/system/delete-ubuntu-user.service' do
   source 'delete-ubuntu-user.service'
