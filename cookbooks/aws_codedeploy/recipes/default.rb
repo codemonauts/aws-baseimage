@@ -1,5 +1,6 @@
 # dependencys for the Codedeploy agent
 package 'ruby'
+package 'gdebi-core'
 
 remote_file '/tmp/codedeploy-installer' do
   source 'https://aws-codedeploy-eu-central-1.s3.amazonaws.com/latest/install'
