@@ -39,7 +39,8 @@
         "aws_codedeploy",
         "aws_cloudwatch",
         "aws_ssm",
-        "web"
+        "web",
+        "prepare"
       ]
     }
   ]

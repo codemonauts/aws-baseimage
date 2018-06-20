@@ -1,0 +1,9 @@
+[Unit]
+Description="Pull latest cookbooks and run chef-solo on boot"
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/prepare.sh
+
+[Install]
+WantedBy=multi-user.target

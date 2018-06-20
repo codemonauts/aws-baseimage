@@ -18,4 +18,5 @@ suites:
       - recipe[aws_cloudwatch]
       - recipe[aws_ssm]
       - recipe[web]
+      - recipe[prepare]
     attributes:
