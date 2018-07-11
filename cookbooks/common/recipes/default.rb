@@ -1,5 +1,15 @@
 apt_update 'update'
 
+execute "apt update" do
+  command "apt-get -y update"
+end
+execute "apt dist-upgrade" do
+  command 'DEBIAN_FRONTEND=noninteractive apt-get -fuy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade'
+end
+execute "apt autoremove" do
+  command "apt-get -y autoremove"
+end
+
 # Install a set of default tools
 # Allows easier meintenace via ssh
 package 'tmux'
