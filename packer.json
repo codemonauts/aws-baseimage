@@ -38,7 +38,6 @@
         "useraccounts",
         "aws_codedeploy",
         "aws_cloudwatch",
-        "aws_ssm",
         "web",
         "prepare"
       ]
