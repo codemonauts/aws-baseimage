@@ -1,9 +1,7 @@
 #! /usr/bin/env bash
 set -eu
 
-# get ami-id from manifest.json
-echo "Getting Image-ID of new AMI"
-IMAGE_ID=$(jq --raw-output '.builds[0].artifact_id' manifest.json |cut -d":" -f2)
+IMAGE_ID=$1
 
 # Get name for this image-id from aws
 echo "Getting Name of this AMI"
