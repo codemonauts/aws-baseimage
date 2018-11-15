@@ -18,8 +18,8 @@ NEW_IMAGE_ID=$(aws ec2 copy-image --source-image-id "$IMAGE_ID" --source-region 
 while true; do
 	STATE=$(aws ec2 describe-images --filters Name=image-id,Values="$NEW_IMAGE_ID" --region=$DEST_REGION | jq --raw-output ".Images[0].State")
 	if [ "$STATE" == "pending" ]; then
-		echo "New image is still pending. Sleeping for 15 sec..."	
-		sleep 15
+		echo "New image is still pending. Sleeping for 30 sec..."
+		sleep 30
 	elif [ "$STATE" == "available" ]; then
 		echo "Image is available."
 		break;
@@ -32,3 +32,6 @@ done
 # Make the image public in the new region
 echo "Tagging new image as public"
 aws ec2 modify-image-attribute --image-id "$NEW_IMAGE_ID" --region "$DEST_REGION" --launch-permission "{\"Add\":[{\"Group\":\"all\"}]}"
+
+
+echo "Done"
