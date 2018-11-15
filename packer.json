@@ -23,7 +23,10 @@
       "ami_name": "codemonauts-baseimage_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
-      ]
+      ],
+      "tags": {
+        "Amazon_AMI_Management_Identifier": "managed"
+      }
     }
   ],
   "provisioners": [
@@ -41,6 +44,17 @@
         "web",
         "prepare"
       ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "amazon-ami-management",
+      "regions": [
+        "eu-central-1",
+        "eu-west-1"
+      ],
+      "identifier": "managed",
+      "keep_releases": "3"
     }
   ]
 }
