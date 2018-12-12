@@ -34,4 +34,4 @@ echo "Tagging new image as public"
 aws ec2 modify-image-attribute --image-id "$NEW_IMAGE_ID" --region "$DEST_REGION" --launch-permission "{\"Add\":[{\"Group\":\"all\"}]}"
 
 
-echo "Done"
+echo "Done. The new Image-ID is $NEW_IMAGE_ID"
