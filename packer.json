@@ -31,6 +31,13 @@
   ],
   "provisioners": [
     {
+      "inline": [
+        "sudo apt-get update",
+        "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"
+      ],
+      "type": "shell"
+    },
+    {
       "type": "chef-solo",
       "cookbook_paths": [
         "cookbooks"
