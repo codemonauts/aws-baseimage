@@ -1,5 +1,5 @@
 # Install a set of default tools
-# Allows easier meintenace via ssh
+# Allows easier maintenance via ssh
 package 'tmux'
 package 'vim'
 package 'apt-transport-https'
