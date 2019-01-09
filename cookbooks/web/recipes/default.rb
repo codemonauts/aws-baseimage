@@ -1,5 +1,6 @@
 package "nginx";
 package "nginx-extras";
+package "mysql-client"
 package "php-imagick";
 package "php-memcached";
 package "php-soap";
