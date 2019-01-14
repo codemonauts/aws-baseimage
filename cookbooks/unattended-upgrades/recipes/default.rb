@@ -16,6 +16,14 @@ cookbook_file '/etc/apt/apt.conf.d/10periodic' do
   action :create
 end
 
+cookbook_file '/etc/systemd/system/apt-daily-upgrade.timer' do
+  source 'apt-daily-upgrade.timer'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
 # Disable the own unattented-upgrades timer/service by Ubuntu which where introduced in 16.04
 # These run on reboot, and conflict with our chef-solo run because apt is locked
 service 'apt-daily.service' do
