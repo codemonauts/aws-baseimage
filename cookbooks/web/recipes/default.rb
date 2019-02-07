@@ -15,6 +15,7 @@ package "php7.0-mcrypt";
 package "php7.0-mysql";
 package "php7.0-opcache";
 package "php7.0-xml";
+package "php7.0-zip";
 
 # Delete default configuration files
 file_array = ['/etc/nginx/sites-enables/default',
