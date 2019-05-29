@@ -15,7 +15,7 @@ directory '/home/cmonauts/.ssh' do
 end
 
 cookbook_file '/home/cmonauts/.ssh/authorized_keys' do
-  source 'ssh_pubkey.pem'
+  source 'authorized_keys'
   owner 'cmonauts'
   group 'cmonauts'
   mode '0600'
