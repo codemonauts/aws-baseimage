@@ -3,7 +3,7 @@
 This repository contains the [Chef]() cookbooks and the [Packer]() configuration to generate the AWS AMI,
 which we use at [codemonauts](https://codemonauts.com/) to start our EC2 instances.
 
-If you find some problems or errors in this repositoy feel free to open an issue or directly fix it with an pull
+If you find some problems or errors in this repository feel free to open an issue or directly fix it with an pull
 request if you want to.  
 
 ## Known problems
