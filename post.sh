@@ -1,11 +1,12 @@
 #! /usr/bin/env bash
-set -eu
+set -euo pipefail
 
 IMAGE_ID=$1
 
 # Get name for this image-id from aws
 echo "Getting Name of this AMI"
 IMAGE_NAME=$(aws ec2 describe-images --filters Name=image-id,Values="$IMAGE_ID" | jq --raw-output ".Images[0].Name")
+echo "Found $IMAGE_NAME"
 
 # Copy the image to another region
 SRC_REGION="eu-central-1"
