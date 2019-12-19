@@ -49,8 +49,7 @@
         "useraccounts",
         "aws_codedeploy",
         "aws_cloudwatch",
-        "web",
-        "prepare"
+        "web"
       ]
     }
   ],
