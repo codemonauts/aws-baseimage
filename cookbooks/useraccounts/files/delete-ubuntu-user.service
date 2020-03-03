@@ -1,9 +1,0 @@
-[Unit]
-Description=Delete ubuntu user during boot
-
-[Service]
-Type=oneshot
-ExecStart=-/usr/sbin/deluser --remove-home ubuntu
-
-[Install]
-WantedBy=multi-user.target

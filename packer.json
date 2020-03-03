@@ -20,7 +20,7 @@
       },
       "instance_type": "t3.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-baseimage_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-baseimage-7.4_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
@@ -48,20 +48,8 @@
         "unattended-upgrades",
         "useraccounts",
         "aws_codedeploy",
-        "aws_cloudwatch",
         "web"
       ]
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "amazon-ami-management",
-      "regions": [
-        "eu-central-1",
-        "eu-west-1"
-      ],
-      "identifier": "managed",
-      "keep_releases": "3"
     }
   ]
 }

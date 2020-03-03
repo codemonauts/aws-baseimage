@@ -32,15 +32,13 @@ cookbook_file "/etc/sudoers.d/90-cmonauts" do
   group "root"
 end
 
-# Create Systemd service to delete the ubuntu user on reboot
-cookbook_file '/etc/systemd/system/delete-ubuntu-user.service' do
-  source 'delete-ubuntu-user.service'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
+# Disable password login for ubuntu user
+user 'ubuntu' do
+  password '!'
+  action :modify
 end
 
-service 'delete-ubuntu-user' do
-  action :enable
+execute 'disable ubuntu user' do
+  command 'usermod --expiredate 1 ubuntu'
+  action :run
 end
