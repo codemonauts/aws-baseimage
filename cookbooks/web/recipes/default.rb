@@ -11,6 +11,14 @@ file_array.each do |this_file|
   end
 end
 
+remote_directory '/etc/nginx/snippets/' do
+  source "snippets"
+  files_owner 'root'
+  files_group 'root'
+  owner 'root'
+  group 'root'
+  purge true
+end
 
 service "php7.4-fpm" do
   action [:stop, :disable]
