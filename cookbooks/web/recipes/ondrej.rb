@@ -5,13 +5,6 @@ apt_repository "ondrej-php" do
     key "14AA40EC0831756756D7F66C4F4EA0AAE5267A6C"
 end 
 
-apt_repository "ondrej-nginx" do
-    uri "http://ppa.launchpad.net/ondrej/nginx-mainline/ubuntu"
-    distribution "xenial"
-    components ["main"]
-    key "14AA40EC0831756756D7F66C4F4EA0AAE5267A6C"
-end 
-
 package "nginx";
 package "nginx-extras";
 package "mysql-client"
