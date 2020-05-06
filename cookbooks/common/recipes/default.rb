@@ -29,3 +29,9 @@ cookbook_file '/etc/locale.gen' do
   notifies :run, "execute[locale-gen]", :immediate
 end
 
+# Install awscli
+package "python3-pip";
+
+execute "install awscli" do
+  command "pip3 install awscli"
+end
