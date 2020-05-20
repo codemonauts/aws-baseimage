@@ -51,5 +51,16 @@
         "web"
       ]
     }
+  ],
+  "post-processors": [
+    {
+      "type": "amazon-ami-management",
+      "regions": [
+        "eu-central-1",
+        "eu-west-1"
+      ],
+      "identifier": "managed",
+      "keep_releases": "3"
+    }
   ]
 }
