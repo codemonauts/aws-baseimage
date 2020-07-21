@@ -2,7 +2,7 @@
 set -eu
 
 echo "> Checking packer.json for errors..."
-for CONF in $(ls packer-*.json); do ./packer validate $CONF; done
+for CONF in $(ls packer-*.json); do ./packer validate -syntax-only $CONF; done
 
 echo "> Checking Chef cookbooks for errors..."
 # Ignore
