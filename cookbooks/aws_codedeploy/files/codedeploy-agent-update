@@ -1,6 +1,0 @@
-# Cron that starts once every hour or on reboot, which updates codedeploy-agent.
-# This cron file has been fuzzed to run after 17:52:14 every hour.
-SHELL=/bin/sh
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-52 17 * * * root /bin/sleep 14; /opt/codedeploy-agent/bin/update --sanity-check --upgrade deb
-22 * * * * root /bin/sleep 14; /opt/codedeploy-agent/bin/update --sanity-check --downgrade deb
