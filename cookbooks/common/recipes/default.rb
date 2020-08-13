@@ -1,3 +1,5 @@
+apt_update 'update'
+
 # Install a set of default tools
 # Allows easier maintenance via ssh
 package 'vim'
