@@ -1,8 +1,4 @@
 {
-  "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": ""
-  },
   "builders": [
     {
       "type": "amazon-ebs",
@@ -18,14 +14,14 @@
         ],
         "most_recent": true
       },
-      "instance_type": "t3.micro",
+      "instance_type": "t3a.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-base_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-base-xenial_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
       "tags": {
-        "Amazon_AMI_Management_Identifier": "managed"
+        "Amazon_AMI_Management_Identifier": "base_xenial"
       }
     }
   ],
@@ -59,7 +55,7 @@
         "eu-west-1"
       ],
       "identifier": "managed",
-      "keep_releases": "3"
+      "keep_releases": "1"
     }
   ]
 }
