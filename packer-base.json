@@ -1,8 +1,4 @@
 {
-  "variables": {
-    "aws_access_key": "",
-    "aws_secret_key": ""
-  },
   "builders": [
     {
       "type": "amazon-ebs",
@@ -20,12 +16,12 @@
       },
       "instance_type": "t3a.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-base-2004_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-base-focal_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
       "tags": {
-        "Amazon_AMI_Management_Identifier": "managed"
+        "Amazon_AMI_Management_Identifier": "base_focal"
       }
     }
   ],

@@ -1,4 +1,6 @@
-apt_update 'update'
+apt_update 'update' do
+  action :update
+end
 
 # Install a set of default tools
 # Allows easier maintenance via ssh
