@@ -1,4 +1,6 @@
-apt_update 'update'
+apt_update 'update' do
+  action :update
+end
 
 # Install a set of default tools
 # Allows easier maintenance via ssh
@@ -30,4 +32,3 @@ cookbook_file '/etc/locale.gen' do
   action :create
   notifies :run, "execute[locale-gen]", :immediate
 end
-

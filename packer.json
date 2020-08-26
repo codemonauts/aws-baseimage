@@ -20,12 +20,12 @@
       },
       "instance_type": "t3.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-base-1604-70_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-web-xenial-php70_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
       "tags": {
-        "Amazon_AMI_Management_Identifier": "1604_70"
+        "Amazon_AMI_Management_Identifier": "web_xenial_70"
       }
     }
   ],
