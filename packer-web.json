@@ -16,7 +16,7 @@
       },
       "instance_type": "t3a.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-web-focal-php7.4_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-web-focal-php74_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
