@@ -1,7 +1,6 @@
 include_recipe 'web::ondrej'
 
 package "nginx";
-package "nginx-extras";
 package "mysql-client"
 package "php-imagick";
 package "php7.4-soap";
