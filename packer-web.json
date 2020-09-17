@@ -6,7 +6,7 @@
       "source_ami_filter": {
         "filters": {
           "virtualization-type": "hvm",
-          "name": "ubuntu/images/*ubuntu-focal-20.04-amd64-server-*",
+          "name": "ubuntu/images/*ubuntu-focal-20.04-arm64-server-*",
           "root-device-type": "ebs"
         },
         "owners": [
@@ -14,14 +14,14 @@
         ],
         "most_recent": true
       },
-      "instance_type": "t3a.micro",
+      "instance_type": "t4g.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "codemonauts-web-focal-php74_{{ isotime \"2006-01-02_03-04\" }}",
+      "ami_name": "codemonauts-arm-web-focal-php74_{{ isotime \"2006-01-02_03-04\" }}",
       "ami_groups": [
         "all"
       ],
       "tags": {
-        "Amazon_AMI_Management_Identifier": "web_focal_74"
+        "Amazon_AMI_Management_Identifier": "arm_web_focal_74"
       }
     }
   ],
