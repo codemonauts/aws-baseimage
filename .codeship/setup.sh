@@ -1,6 +1,9 @@
 #! /usr/bin/env bash
 set -eu
 
+# Change Python version
+pyenv local 3.8
+
 # Install cookstyle
 gem install foodcritic
 
