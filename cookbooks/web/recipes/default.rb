@@ -2,8 +2,6 @@ package "nginx";
 package "nginx-extras";
 package "mysql-client"
 package "php-imagick";
-package "php-soap";
-package "php-xml";
 package "php7.0-cli";
 package "php7.0-curl";
 package "php7.0-fpm";
@@ -13,6 +11,7 @@ package "php7.0-mbstring";
 package "php7.0-mcrypt";
 package "php7.0-mysql";
 package "php7.0-opcache";
+package "php7.0-soap";
 package "php7.0-xml";
 package "php7.0-zip";
 
