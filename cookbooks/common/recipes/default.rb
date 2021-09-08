@@ -2,6 +2,10 @@ apt_update 'update' do
   action :update
 end
 
+package %w(man-db manpages manpages-dev) do
+  action :purge
+end
+
 # Install a set of default tools
 # Allows easier maintenance via ssh
 package 'vim'
