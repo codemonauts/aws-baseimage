@@ -2,23 +2,24 @@ include_recipe 'web::ondrej'
 
 package "nginx";
 package "mysql-client"
-package "php7.4-cli";
-package "php7.4-curl";
-package "php7.4-fpm";
-package "php7.4-gd";
-package "php7.4-imagick";
-package "php7.4-intl";
-package "php7.4-mbstring";
-package "php7.4-mysql";
-package "php7.4-opcache";
-package "php7.4-soap";
-package "php7.4-xml";
-package "php7.4-zip";
+package "php7.0-imagick";
+package "php7.0-cli";
+package "php7.0-curl";
+package "php7.0-fpm";
+package "php7.0-gd";
+package "php7.0-intl";
+package "php7.0-mbstring";
+package "php7.0-mcrypt";
+package "php7.0-mysql";
+package "php7.0-opcache";
+package "php7.0-soap";
+package "php7.0-xml";
+package "php7.0-zip";
 
 # Delete default configuration files
 file_array = ['/etc/nginx/sites-enabled/default',
               '/etc/nginx/sites-available/default',
-              '/etc/php/7.4/fpm/pool.d/www.conf']
+              '/etc/php/7.0/fpm/pool.d/www.conf']
 
 file_array.each do |this_file|
   file this_file do
@@ -35,7 +36,15 @@ remote_directory '/etc/nginx/snippets/' do
   purge true
 end
 
-service "php7.4-fpm" do
+cookbook_file '/etc/php/7.0/fpm/php.ini' do
+  source 'fpm/php70.ini'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+service "php7.0-fpm" do
   action [:stop, :disable]
 end
 

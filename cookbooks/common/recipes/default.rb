@@ -8,7 +8,7 @@ end
 
 # Install a set of default tools
 # Allows easier maintenance via ssh
-package 'vim'
+package 'vim-tiny'
 package 'apt-transport-https'
 package 'htop'
 package 'less'
