@@ -26,6 +26,19 @@ file_array.each do |this_file|
   end
 end
 
+# CraftCMS specific changes
+replace_or_add "increase max_execution_time" do
+  path "/etc/php/7.4/fpm/php.ini"
+  pattern "max_execution_time.*"
+  line "max_execution_time = 120"
+end
+
+replace_or_add "increase memory_limit" do
+  path "/etc/php/7.4/fpm/php.ini"
+  pattern "memory_limit.*"
+  line "memory_limit = 256M"
+end
+
 remote_directory '/etc/nginx/snippets/' do
   source "snippets"
   files_owner 'root'
@@ -33,14 +46,6 @@ remote_directory '/etc/nginx/snippets/' do
   owner 'root'
   group 'root'
   purge true
-end
-
-cookbook_file '/etc/php/7.4/fpm/php.ini' do
-  source 'fpm/php74.ini'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
 end
 
 service "php7.4-fpm" do
