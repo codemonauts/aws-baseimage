@@ -58,9 +58,13 @@ build {
     ]
   }
 
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
   provisioner "chef-solo" {
     chef_license   = "accept"
-    cookbook_paths = ["cookbooks"]
+    cookbook_paths = [".vendor"]
     run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "web::php74"]
   }
 
@@ -95,9 +99,13 @@ build {
     ]
   }
 
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
   provisioner "chef-solo" {
     chef_license   = "accept"
-    cookbook_paths = ["cookbooks"]
+    cookbook_paths = [".vendor"]
     run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "web::php70"]
   }
 
@@ -129,9 +137,13 @@ build {
     inline = ["sudo apt-get update", "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
   }
 
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
   provisioner "chef-solo" {
     chef_license   = "accept"
-    cookbook_paths = ["cookbooks"]
+    cookbook_paths = [".vendor"]
     run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy"]
   }
 
@@ -167,9 +179,13 @@ build {
     ]
   }
 
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
   provisioner "chef-solo" {
     chef_license   = "accept"
-    cookbook_paths = ["cookbooks"]
+    cookbook_paths = [".vendor"]
     run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "web::php80"]
   }
 
@@ -201,9 +217,13 @@ build {
     inline = ["sudo apt-get update", "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
   }
 
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
   provisioner "chef-solo" {
     chef_license   = "accept"
-    cookbook_paths = ["cookbooks"]
+    cookbook_paths = [".vendor"]
     run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy"]
   }
 

@@ -1,0 +1,20 @@
+DEPENDENCIES
+  aws_codedeploy
+    path: cookbooks/aws_codedeploy
+  common
+    path: cookbooks/common
+  unattended-upgrades
+    path: cookbooks/unattended-upgrades
+  useraccounts
+    path: cookbooks/useraccounts
+  web
+    path: cookbooks/web
+
+GRAPH
+  aws_codedeploy (1.0.0)
+  common (1.0.0)
+  line (4.4.4)
+  unattended-upgrades (1.0.0)
+  useraccounts (1.0.0)
+  web (1.0.0)
+    line (>= 0.0.0)
