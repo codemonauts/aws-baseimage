@@ -48,6 +48,13 @@ remote_directory '/etc/nginx/snippets/' do
   purge true
 end
 
+cookbook_file '/etc/nginx/nginx.conf' do
+  source 'nginx.conf'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
 service "php7.4-fpm" do
   action [:stop, :disable]
 end
