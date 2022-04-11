@@ -39,6 +39,18 @@ replace_or_add "increase memory_limit" do
   line "memory_limit = 256M"
 end
 
+replace_or_add "increase upload size" do
+  path "/etc/php/7.4/fpm/php.ini"
+  pattern "upload_max_filesize.*"
+  line "upload_max_filesize = 1024M"
+end
+
+replace_or_add "increase post size" do
+  path "/etc/php/7.4/fpm/php.ini"
+  pattern "post_max_size.*"
+  line "post_max_size = 1024M"
+end
+
 remote_directory '/etc/nginx/snippets/' do
   source "snippets"
   files_owner 'root'
