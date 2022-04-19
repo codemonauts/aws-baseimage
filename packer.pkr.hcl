@@ -53,6 +53,7 @@ build {
 
   provisioner "shell" {
     inline = [
+      "sleep 10",
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
     ]
@@ -94,6 +95,8 @@ build {
 
   provisioner "shell" {
     inline = [
+      "sleep 10",
+      "sudo apt-get update",
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
     ]
@@ -134,7 +137,11 @@ build {
   sources = ["source.amazon-ebs.amd64-base-focal"]
 
   provisioner "shell" {
-    inline = ["sudo apt-get update", "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
+    inline = [
+      "sleep 10",
+      "sudo apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"
+    ]
   }
 
   provisioner "shell-local" {
@@ -173,7 +180,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sleep 3",
+      "sleep 10",
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
     ]
@@ -214,7 +221,10 @@ build {
   sources = ["source.amazon-ebs.arm64-base-focal"]
 
   provisioner "shell" {
-    inline = ["sudo apt-get update", "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
+    inline = [
+      "sleep 10",
+      "sudo apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
   }
 
   provisioner "shell-local" {
