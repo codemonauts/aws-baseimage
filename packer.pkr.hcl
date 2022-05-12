@@ -161,10 +161,10 @@ build {
   }
 }
 
-# arm-web-focal-80
-source "amazon-ebs" "arm64-web-focal-php80" {
+# arm-web-focal-81
+source "amazon-ebs" "arm64-web-focal-php81" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-focal-php80_${formatdate("YYYY-MM-DD", timestamp())}"
+  ami_name      = "codemonauts-arm-web-focal-php81_${formatdate("YYYY-MM-DD", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
@@ -175,8 +175,8 @@ source "amazon-ebs" "arm64-web-focal-php80" {
   }
 }
 build {
-  name    = "arm64-web-focal-80"
-  sources = ["source.amazon-ebs.arm64-web-focal-php80"]
+  name    = "arm64-web-focal-81"
+  sources = ["source.amazon-ebs.arm64-web-focal-php81"]
 
   provisioner "shell" {
     inline = [
@@ -193,7 +193,7 @@ build {
   provisioner "chef-solo" {
     chef_license   = "accept"
     cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "web::php80"]
+    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "web::php81"]
   }
 
   post-processor "amazon-ami-management" {
