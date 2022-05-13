@@ -2,6 +2,7 @@ include_recipe 'web::ondrej'
 
 package "nginx";
 package "mysql-client"
+package "php8.1-bcmath";
 package "php8.1-cli";
 package "php8.1-curl";
 package "php8.1-fpm";
