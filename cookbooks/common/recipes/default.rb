@@ -2,8 +2,12 @@ apt_update 'update' do
   action :update
 end
 
-package %w(man-db manpages manpages-dev) do
+package %w(man-db manpages manpages-dev fwupd ntfs-3g open-iscsi) do
   action :purge
+end
+
+execute "autoremove" do
+  command "apt autoremove -y"
 end
 
 # Install a set of default tools
