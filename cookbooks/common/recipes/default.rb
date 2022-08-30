@@ -2,7 +2,7 @@ apt_update 'update' do
   action :update
 end
 
-package %w(man-db manpages manpages-dev fwupd ntfs-3g open-iscsi) do
+package %w(man-db manpages manpages-dev ntfs-3g bolt snapd) do
   action :purge
 end
 
