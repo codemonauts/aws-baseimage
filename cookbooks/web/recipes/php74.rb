@@ -1,7 +1,6 @@
 include_recipe 'web::ondrej'
 
 package "nginx";
-package "mysql-client"
 package "php7.4-cli";
 package "php7.4-curl";
 package "php7.4-fpm";

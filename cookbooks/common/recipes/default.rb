@@ -14,9 +14,11 @@ end
 # Allows easier maintenance via ssh
 package 'vim-tiny'
 package 'apt-transport-https'
+package 'curl'
 package 'htop'
 package 'less'
 package 'ncdu'
+package 'tmux'
 package 'psmisc'
 
 # Enable systemd-timesyncd to sync with NTP

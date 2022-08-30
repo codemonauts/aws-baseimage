@@ -1,7 +1,6 @@
 include_recipe 'web::ondrej'
 
 package "nginx";
-package "mysql-client"
 package "php7.0-imagick";
 package "php7.0-cli";
 package "php7.0-curl";
