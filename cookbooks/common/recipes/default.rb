@@ -20,6 +20,8 @@ package 'less'
 package 'ncdu'
 package 'tmux'
 package 'psmisc'
+package 'cron'
+package 'logrotate'
 
 # Enable systemd-timesyncd to sync with NTP
 service 'systemd-timesyncd' do
