@@ -66,7 +66,7 @@ build {
   provisioner "chef-solo" {
     chef_license   = "accept"
     cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "web::php74"]
+    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php74"]
   }
 
   post-processor "amazon-ami-management" {
@@ -193,7 +193,7 @@ build {
   provisioner "chef-solo" {
     chef_license   = "accept"
     cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "web::php81"]
+    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php81"]
   }
 
   post-processor "amazon-ami-management" {

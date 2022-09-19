@@ -5,6 +5,8 @@ DEPENDENCIES
     path: cookbooks/aws_ssm
   common
     path: cookbooks/common
+  mozjpeg
+    path: cookbooks/mozjpeg
   unattended-upgrades
     path: cookbooks/unattended-upgrades
   useraccounts
@@ -19,6 +21,7 @@ GRAPH
     line (>= 0.0.0)
   common (1.0.0)
   line (4.4.4)
+  mozjpeg (1.0.0)
   unattended-upgrades (1.0.0)
   useraccounts (1.0.0)
   web (1.0.0)
