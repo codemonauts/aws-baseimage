@@ -16,9 +16,9 @@ execute 'install-coddeploy' do
 end
 
 replace_or_add "keep less codedeploy revisions" do
-  path "/etc/codedeploy-agent/conf/codedeployagent.yaml"
+  path "/etc/codedeploy-agent/conf/codedeployagent.yml"
   pattern ":max_revisions:.*"
-  line ":max_revisions: 2"
+  line ":max_revisions: 1"
 end
 
 service 'codedeploy-agent' do
