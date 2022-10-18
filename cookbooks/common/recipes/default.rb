@@ -51,3 +51,7 @@ package "python3-pip";
 execute "install awscli" do
   command "pip3 install awscli"
 end
+
+link '/usr/bin/vim' do
+  to '/usr/bin/vim.tiny'
+end
