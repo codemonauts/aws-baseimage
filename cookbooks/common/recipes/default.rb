@@ -14,6 +14,7 @@ end
 # Allows easier maintenance via ssh
 package 'vim-tiny'
 package 'apt-transport-https'
+package 'bash-completion'
 package 'curl'
 package 'htop'
 package 'less'
