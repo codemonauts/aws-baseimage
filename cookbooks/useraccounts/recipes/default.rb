@@ -25,11 +25,11 @@ end
 # Passwordless sudo for user cmonauts
 package 'sudo'
 
-cookbook_file "/etc/sudoers.d/90-cmonauts" do
-  source "sudoers"
-  mode 0440
-  owner "root"
-  group "root"
+cookbook_file '/etc/sudoers.d/90-cmonauts' do
+  source 'sudoers'
+  mode '440'
+  owner 'root'
+  group 'root'
 end
 
 # Disable password login for ubuntu user

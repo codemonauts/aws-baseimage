@@ -1,0 +1,7 @@
+Chef/Sharing/EmptyMetadataField:
+  Exclude:
+    - 'cookbooks/**/*'
+
+Chef/Sharing/InvalidLicenseString:
+  Exclude:
+    - 'cookbooks/**/*'

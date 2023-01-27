@@ -6,8 +6,8 @@ package %w(man-db manpages manpages-dev ntfs-3g bolt snapd) do
   action :purge
 end
 
-execute "autoremove" do
-  command "apt autoremove -y"
+execute 'autoremove' do
+  command 'apt autoremove -y'
 end
 
 # Install a set of default tools
@@ -26,14 +26,14 @@ package 'logrotate'
 
 # Enable systemd-timesyncd to sync with NTP
 service 'systemd-timesyncd' do
-    action [:enable, :start]
+  action [:enable, :start]
 end
 
 # Install locales package and generate en_US and de_DE
 package 'locales'
 
-execute "locale-gen" do
-  command "locale-gen"
+execute 'locale-gen' do
+  command 'locale-gen'
   action :nothing
 end
 
@@ -43,14 +43,14 @@ cookbook_file '/etc/locale.gen' do
   group 'root'
   mode '0644'
   action :create
-  notifies :run, "execute[locale-gen]", :immediate
+  notifies :run, 'execute[locale-gen]', :immediately
 end
 
 # Install awscli
-package "python3-pip";
+package 'python3-pip'
 
-execute "install awscli" do
-  command "pip3 install awscli"
+execute 'install awscli' do
+  command 'pip3 install awscli'
 end
 
 link '/usr/bin/vim' do

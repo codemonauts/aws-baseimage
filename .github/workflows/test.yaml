@@ -1,0 +1,27 @@
+name: packer
+
+on:
+  - push
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "latest"
+
+      - name: Run `packer validate`
+        run: "packer validate packer.pkr.hcl"
+
+      - name: Install CINC workstation
+        run: curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-workstation -v 22
+
+
+      - name: Run Cookstyle
+        run: cookstyle
