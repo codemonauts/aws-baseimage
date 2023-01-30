@@ -6,7 +6,7 @@ on:
 jobs:
   packer:
     runs-on: ubuntu-latest
-    name: Run Packer and Cookstyle
+    name: Run Packer and cookstyle
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -16,7 +16,7 @@ jobs:
         with:
           version: "latest"
 
-      - run: "packer init"
+      - run: "packer init packer.pkr.hcl"
 
       - run: "packer validate packer.pkr.hcl"
 

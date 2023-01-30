@@ -5,3 +5,7 @@ Chef/Sharing/EmptyMetadataField:
 Chef/Sharing/InvalidLicenseString:
   Exclude:
     - 'cookbooks/**/*'
+
+Chef/Correctness/TmpPath:
+  Exclude:
+    - 'cookbooks/**/*'
