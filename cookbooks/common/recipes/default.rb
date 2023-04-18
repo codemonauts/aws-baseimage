@@ -24,11 +24,6 @@ package 'psmisc'
 package 'cron'
 package 'logrotate'
 
-# Enable systemd-timesyncd to sync with NTP
-service 'systemd-timesyncd' do
-  action [:enable, :start]
-end
-
 # Install locales package and generate en_US and de_DE
 package 'locales'
 
