@@ -70,7 +70,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "managed"
+    identifier    = "amd64_web_jammy_74"
     keep_releases = "1"
     regions       = ["eu-central-1", "eu-west-1"]
   }
@@ -112,7 +112,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "managed"
+    identifier    = "amd64_base_jammy"
     keep_releases = "1"
     regions       = ["eu-central-1", "eu-west-1"]
   }
@@ -128,7 +128,7 @@ source "amazon-ebs" "arm64-web-jammy-php81" {
   source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "arm64_web_jammy_80"
+    Amazon_AMI_Management_Identifier = "arm64_web_jammy_81"
   }
 }
 build {
@@ -154,7 +154,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "managed"
+    identifier    = "arm64_web_jammy_81"
     keep_releases = "1"
     regions       = ["eu-central-1", "eu-west-1"]
   }
@@ -195,7 +195,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "managed"
+    identifier    = "arm64_base_jammy"
     keep_releases = "1"
     regions       = ["eu-central-1", "eu-west-1"]
   }
