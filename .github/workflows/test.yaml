@@ -16,13 +16,14 @@ jobs:
         with:
           version: "latest"
 
-      - run: "packer init packer.pkr.hcl"
+      - name: Run `packer init`
+        run: "packer init packer.pkr.hcl"
 
-      - run: "packer validate packer.pkr.hcl"
+      - name: Run `packer validate`
+        run: "packer validate packer.pkr.hcl"
 
       - name: Install CINC workstation
         run: curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-workstation -v 22
-
 
       - name: Run Cookstyle
         run: cookstyle
