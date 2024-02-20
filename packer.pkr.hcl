@@ -126,6 +126,48 @@ build {
   }
 }
 
+# arm-web-jammy-82
+source "amazon-ebs" "arm64-web-jammy-php82" {
+  ami_groups    = ["all"]
+  ami_name      = "codemonauts-arm-web-jammy-php82_${formatdate("YYYY-MM-DD", timestamp())}"
+  ami_regions   = ["eu-west-1"]
+  instance_type = "t4g.micro"
+  region        = "eu-central-1"
+  source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
+  ssh_username  = "ubuntu"
+  tags = {
+    Amazon_AMI_Management_Identifier = "arm64_web_jammy_82"
+  }
+}
+build {
+  name    = "arm64-web-jammy-82"
+  sources = ["source.amazon-ebs.arm64-web-jammy-php82"]
+
+  provisioner "shell" {
+    inline = [
+      "sleep 10",
+      "sudo apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
+    ]
+  }
+
+  provisioner "shell-local" {
+    command = "mkdir -p .vendor && berks vendor .vendor"
+  }
+
+  provisioner "chef-solo" {
+    chef_license   = "accept"
+    cookbook_paths = [".vendor"]
+    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php82"]
+  }
+
+  post-processor "amazon-ami-management" {
+    identifier    = "arm64_web_jammy_82"
+    keep_releases = "1"
+    regions       = ["eu-central-1", "eu-west-1"]
+  }
+}
+
 # arm-web-jammy-81
 source "amazon-ebs" "arm64-web-jammy-php81" {
   ami_groups    = ["all"]
