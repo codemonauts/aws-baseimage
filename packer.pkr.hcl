@@ -109,19 +109,21 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    command = "mkdir -p .vendor && berks vendor .vendor"
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get -y install python3-pip",
+      "sudo pip3 install ansible"
+    ]
   }
 
-  provisioner "chef-solo" {
-    chef_license   = "accept"
-    cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm"]
+  provisioner "ansible-local" {
+    playbook_dir  = "./"
+    playbook_file = "base.yaml"
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "amd64_base_jammy"
-    keep_releases = "1"
+    keep_releases = "10"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
@@ -213,7 +215,7 @@ build {
 # arm-base-jammy
 source "amazon-ebs" "arm64-base-jammy" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-base-jammy_${formatdate("YYYY-MM-DD-HHmm", timestamp())}"
+  ami_name      = "codemonauts-arm-base-jammy_${formatdate("YYYY-MM-DD-HH-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
@@ -234,19 +236,21 @@ build {
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"]
   }
 
-  provisioner "shell-local" {
-    command = "mkdir -p .vendor && berks vendor .vendor"
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get -y install python3-pip",
+      "sudo pip3 install ansible"
+    ]
   }
 
-  provisioner "chef-solo" {
-    chef_license   = "accept"
-    cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm"]
+  provisioner "ansible-local" {
+    playbook_dir  = "./"
+    playbook_file = "base.yaml"
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "arm64_base_jammy"
-    keep_releases = "1"
+    keep_releases = "10"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }

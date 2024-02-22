@@ -1,0 +1,66 @@
+---
+
+# Install and remove common packages needed for support
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Remove unused packages
+  ansible.builtin.apt:
+    name:
+      - man-db
+      - manpages
+      - manpages-dev
+      - ntfs-3g
+      - bolt
+      - snapd
+    state: absent
+    autoremove: true
+
+- name: Install packages needed
+  ansible.builtin.apt:
+    name:
+      - vim-tiny
+      - apt-transport-https
+      - bash-completion
+      - curl
+      - htop
+      - less
+      - ncdu
+      - tmux
+      - psmisc
+      - cron
+      - logrotate
+      - locales
+
+# locales
+
+- name: Copy locales config
+  ansible.builtin.copy:
+    src: locale.gen
+    dest: /etc/locale.gen
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Generate locales for en_US and de_DE 
+  ansible.builtin.shell: locale-gen
+
+# Install AWS CLI
+
+- name: Install pip
+  ansible.builtin.apt:
+    name: python3-pip
+
+- name: Install AWS CLI
+  ansible.builtin.pip:
+    name: awscli
+
+- name: Create a symbolic link for vim
+  ansible.builtin.file:
+    src: /usr/bin/vim.tiny
+    dest: /usr/bin/vim
+    owner: root
+    group: root
+    state: link

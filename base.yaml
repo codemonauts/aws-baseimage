@@ -1,0 +1,9 @@
+---
+- name: Base server AMI
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  roles:
+    - common
+    - unattended_upgrades
+    - useraccounts

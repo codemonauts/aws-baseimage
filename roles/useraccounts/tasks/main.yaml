@@ -1,0 +1,55 @@
+---
+
+# codemonauts user
+
+- name: Create group
+  ansible.builtin.group:
+    name: cmonauts
+
+- name: Create user and homedir
+  ansible.builtin.user:
+    name: cmonauts
+    group: cmonauts
+    comment: admin account codemonauts
+    home: /home/cmonauts
+    shell: /bin/bash
+    password: "$6$YSDsU/ZetJlqs$f26S1INvF4a1hFpc4VQa4vWodqF55ZTV4EZtoxKyXd1wF/sN.pT/AGo3t86FNpegeevdohn4DVL4CCs45z43Z."
+    create_home: true
+
+- name: Create ssh folder
+  ansible.builtin.file:
+    path: /home/cmonauts/.ssh
+    state: directory
+    owner: cmonauts
+    group: cmonauts
+    mode: '0700'
+
+- name: Copy authorized_keys
+  ansible.builtin.copy:
+    src: authorized_keys
+    dest: /home/cmonauts/.ssh/authorized_keys
+    owner: cmonauts
+    group: cmonauts
+    mode: '0600'
+
+# Allow sodoers
+
+- name: Install sudo
+  ansible.builtin.apt:
+    name: sudo
+
+- name: Copy sudoer config for cmonauts
+  ansible.builtin.copy:
+    src: sudoers
+    dest: /etc/sudoers.d/90-cmonauts
+    owner: root
+    group: root
+    mode: '0440'
+
+# Disable standard ubuntu user
+
+- name: Create user and homedir
+  ansible.builtin.user:
+    name: ubuntu
+    password: "!"
+    expires: 1

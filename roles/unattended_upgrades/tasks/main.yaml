@@ -1,0 +1,31 @@
+---
+
+# Enable unattended security upgrades once a day
+
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name: unattended-upgrades
+
+- name: Copy apt periodic config
+  ansible.builtin.copy:
+    src: 10periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy apt unattended upgrades config
+  ansible.builtin.copy:
+    src: 50unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy systemd timer
+  ansible.builtin.copy:
+    src: apt-daily-upgrade.timer
+    dest: /etc/systemd/system/apt-daily-upgrade.timer
+    owner: root
+    group: root
+    mode: '0644'

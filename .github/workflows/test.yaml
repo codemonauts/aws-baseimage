@@ -1,29 +1,26 @@
-name: packer
+name: Validate
 
 on:
   - push
 
 jobs:
-  packer:
+  validate:
     runs-on: ubuntu-latest
-    name: Run Packer and cookstyle
+    name: Validate provisioning
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup `packer`
+      - name: Setup packer
         uses: hashicorp/setup-packer@main
         with:
           version: "latest"
 
-      - name: Run `packer init`
+      - name: Init packer 
         run: "packer init packer.pkr.hcl"
 
-      - name: Run `packer validate`
+      - name: Validate packer configuration
         run: "packer validate packer.pkr.hcl"
 
-      - name: Install CINC workstation
-        run: curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-workstation -v 22
-
-      - name: Run Cookstyle
-        run: cookstyle
+      - name: Validate ansible playbooks
+        uses: ansible/ansible-lint-action@main
