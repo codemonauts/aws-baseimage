@@ -1,0 +1,41 @@
+---
+
+# Build and install mozjpeg
+
+- name: Install build packages for mozjpeg
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - autoconf
+      - automake
+      - libtool
+      - nasm
+      - make
+      - pkg-config
+
+- name: Copy install script
+  ansible.builtin.copy:
+    src: installer.sh
+    dest: /tmp/installer.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Build and install mozjpeg
+  ansible.builtin.command:
+    cmd: /tmp/installer.sh
+    chdir: /tmp
+  changed_when: true
+
+- name: Remove build packages
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - autoconf
+      - automake
+      - libtool
+      - nasm
+      - make
+      - pkg-config
+    state: absent
+    autoremove: true
