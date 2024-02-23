@@ -1,0 +1,21 @@
+---
+
+# Install AWS SSM agent
+
+- name: SSM agent install package for arm64 architecture
+  ansible.builtin.apt:
+    deb: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_arm64/amazon-ssm-agent.deb
+  when:
+    - ansible_facts['architecture'] == "aarch64"
+
+- name: SSM agent install package for x86_64 architecture
+  ansible.builtin.apt:
+    deb: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+  when:
+    - ansible_facts['architecture'] == "x86_64"
+
+- name: Enable SSM agent service
+  ansible.builtin.systemd:
+    name: amazon-ssm-agent
+    enabled: true
+    masked: false

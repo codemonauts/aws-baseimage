@@ -1,5 +1,8 @@
 ---
-- name: Base server AMI
+
+# Create a server base AMI
+
+- name: Server base AMI
   hosts: 127.0.0.1
   connection: local
   become: true
@@ -7,3 +10,6 @@
     - common
     - unattended_upgrades
     - useraccounts
+    - aws_ssm
+    - aws_codedeploy
+    - security

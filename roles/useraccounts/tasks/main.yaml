@@ -45,11 +45,3 @@
     owner: root
     group: root
     mode: '0440'
-
-# Disable standard ubuntu user
-
-- name: Create user and homedir
-  ansible.builtin.user:
-    name: ubuntu
-    password: "!"
-    expires: 1

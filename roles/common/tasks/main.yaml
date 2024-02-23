@@ -44,8 +44,9 @@
     group: root
     mode: '0644'
 
-- name: Generate locales for en_US and de_DE 
-  ansible.builtin.shell: locale-gen
+- name: Generate locales for en_US and de_DE
+  ansible.builtin.command: locale-gen
+  changed_when: true
 
 # Install AWS CLI
 

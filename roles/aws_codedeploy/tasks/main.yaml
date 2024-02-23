@@ -1,0 +1,33 @@
+---
+
+# Install current AWS Codedeploy agent
+
+- name: Install Codedeploy agent dependencys
+  ansible.builtin.apt:
+    name:
+      - ruby
+      - gdebi-core
+
+- name: Copy install package
+  ansible.builtin.get_url:
+    url: https://aws-codedeploy-eu-central-1.s3.amazonaws.com/latest/install
+    dest: /tmp/codedeploy-installer
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install Codedeploy agent
+  ansible.builtin.command: /tmp/codedeploy-installer auto
+  changed_when: true
+
+- name: Keep less Codedeploy revisions
+  ansible.builtin.lineinfile:
+    path: /etc/codedeploy-agent/conf/codedeployagent.yml
+    regexp: '^:max_revisions'
+    line: ':max_revisions: 1'
+
+- name: Enable Codedeploy agent service
+  ansible.builtin.systemd:
+    name: codedeploy-agent
+    enabled: true
+    masked: false

@@ -1,0 +1,9 @@
+---
+
+# Disable standard ubuntu user
+
+- name: Disable Ubuntu default user
+  ansible.builtin.user:
+    name: ubuntu
+    password: "!"
+    expires: 1
