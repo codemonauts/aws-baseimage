@@ -4,10 +4,6 @@ packer {
       source  = "github.com/hashicorp/amazon"
       version = "~> 1"
     }
-    chef = {
-      source  = "github.com/hashicorp/chef"
-      version = "~> 1"
-    }
     amazon-ami-management = {
       version = ">= 1.2.0"
       source  = "github.com/wata727/amazon-ami-management"
@@ -49,7 +45,7 @@ data "amazon-ami" "ubuntu-jammy-arm64" {
 # amd-web-jammy-74
 source "amazon-ebs" "amd64-web-jammy-php74" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-web-jammy-php74_${formatdate("YYYY-MM-DD-HHmm", timestamp())}"
+  ami_name      = "codemonauts-web-jammy-php74_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t3a.micro"
   region        = "eu-central-1"
@@ -71,19 +67,25 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    command = "mkdir -p .vendor && berks vendor .vendor"
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get -y install python3-pip",
+      "sudo pip3 install ansible"
+    ]
   }
 
-  provisioner "chef-solo" {
-    chef_license   = "accept"
-    cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php74"]
+  provisioner "ansible-local" {
+    playbook_dir  = "./"
+    playbook_file = "webserver.yaml"
+    extra_arguments = [ 
+      "-e",
+      "php_version=7.4" 
+    ]
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "amd64_web_jammy_74"
-    keep_releases = "1"
+    keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
@@ -91,7 +93,7 @@ build {
 # amd-base-jammy
 source "amazon-ebs" "amd64-base-jammy" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-base-jammy_${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+  ami_name      = "codemonauts-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t3a.micro"
   region        = "eu-central-1"
@@ -122,12 +124,12 @@ build {
 
   provisioner "ansible-local" {
     playbook_dir  = "./"
-    playbook_file = "base.yaml"
+    playbook_file = "baseimage.yaml"
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "amd64_base_jammy"
-    keep_releases = "10"
+    keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
@@ -135,7 +137,7 @@ build {
 # arm-web-jammy-82
 source "amazon-ebs" "arm64-web-jammy-php82" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-jammy-php82_${formatdate("YYYY-MM-DD", timestamp())}"
+  ami_name      = "codemonauts-arm-web-jammy-php82_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
@@ -157,19 +159,25 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    command = "mkdir -p .vendor && berks vendor .vendor"
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get -y install python3-pip",
+      "sudo pip3 install ansible"
+    ]
   }
 
-  provisioner "chef-solo" {
-    chef_license   = "accept"
-    cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php82"]
+  provisioner "ansible-local" {
+    playbook_dir  = "./"
+    playbook_file = "webserver.yaml"
+    extra_arguments = [ 
+      "-e",
+      "php_version=8.2" 
+    ]
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "arm64_web_jammy_82"
-    keep_releases = "1"
+    keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
@@ -177,7 +185,7 @@ build {
 # arm-web-jammy-81
 source "amazon-ebs" "arm64-web-jammy-php81" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-jammy-php81_${formatdate("YYYY-MM-DD", timestamp())}"
+  ami_name      = "codemonauts-arm-web-jammy-php81_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
@@ -199,19 +207,25 @@ build {
     ]
   }
 
-  provisioner "shell-local" {
-    command = "mkdir -p .vendor && berks vendor .vendor"
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get -y install python3-pip",
+      "sudo pip3 install ansible"
+    ]
   }
 
-  provisioner "chef-solo" {
-    chef_license   = "accept"
-    cookbook_paths = [".vendor"]
-    run_list       = ["common", "unattended-upgrades", "useraccounts", "aws_codedeploy", "aws_ssm", "mozjpeg", "web::php81"]
+  provisioner "ansible-local" {
+    playbook_dir  = "./"
+    playbook_file = "webserver.yaml"
+    extra_arguments = [ 
+      "-e",
+      "php_version=8.1" 
+    ]
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "arm64_web_jammy_81"
-    keep_releases = "1"
+    keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
@@ -219,7 +233,7 @@ build {
 # arm-base-jammy
 source "amazon-ebs" "arm64-base-jammy" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-base-jammy_${formatdate("YYYY-MM-DD-HH-mm", timestamp())}"
+  ami_name      = "codemonauts-arm-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
@@ -249,12 +263,12 @@ build {
 
   provisioner "ansible-local" {
     playbook_dir  = "./"
-    playbook_file = "base.yaml"
+    playbook_file = "baseimage.yaml"
   }
 
   post-processor "amazon-ami-management" {
     identifier    = "arm64_base_jammy"
-    keep_releases = "10"
+    keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }

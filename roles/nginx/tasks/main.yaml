@@ -1,0 +1,40 @@
+---
+
+# Install nginx webserver
+
+- name: Install nginx package
+  ansible.builtin.apt:
+    name:
+      - nginx
+
+- name: Delete default files
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/sites-available/default
+    - /etc/nginx/snippets/
+
+- name: Copy main config file
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy nginx snippets
+  ansible.builtin.copy:
+    src: snippets
+    dest: /etc/nginx
+    owner: root
+    group: root
+    mode: '0644'
+    directory_mode: '0755'
+
+- name: Enable nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: true
+    masked: false

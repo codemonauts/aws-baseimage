@@ -1,9 +1,4 @@
-VERSION="4.1.1"
-
-cd /tmp
-wget https://github.com/mozilla/mozjpeg/archive/refs/tags/v${VERSION}.tar.gz -O mozjpeg.tar.gz
-tar xvzf mozjpeg.tar.gz
-cd mozjpeg-${VERSION}
+#!/bin/sh
 mkdir build
 cd build
 sudo cmake -G"Unix Makefiles" -DPNG_SUPPORTED=OFF ../

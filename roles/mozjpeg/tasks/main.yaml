@@ -13,18 +13,31 @@
       - make
       - pkg-config
 
+- name: Copy install package
+  ansible.builtin.get_url:
+    url: "https://github.com/mozilla/mozjpeg/archive/refs/tags/v{{ mozjpeg_version }}.tar.gz"
+    dest: /tmp/mozjpeg.tar.gz
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Extract mozjpeg archive
+  ansible.builtin.unarchive:
+    src: /tmp/mozjpeg.tar.gz
+    dest: /tmp
+
 - name: Copy install script
   ansible.builtin.copy:
     src: installer.sh
-    dest: /tmp/installer.sh
+    dest: "/tmp/mozjpeg-{{ mozjpeg_version }}/installer.sh"
     owner: root
     group: root
     mode: '0755'
 
 - name: Build and install mozjpeg
   ansible.builtin.command:
-    cmd: /tmp/installer.sh
-    chdir: /tmp
+    cmd: /tmp/mozjpeg-{{ mozjpeg_version }}/installer.sh
+    chdir: /tmp/mozjpeg-{{ mozjpeg_version }}
   changed_when: true
 
 - name: Remove build packages

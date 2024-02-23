@@ -3,7 +3,16 @@
   hosts: 127.0.0.1
   connection: local
   become: true
+  vars:
+    php_version: "8.1"
+    mozjpeg_version: "4.1.1"
   roles:
     - common
     - unattended_upgrades
     - useraccounts
+    - aws_ssm
+    - aws_codedeploy
+    - mozjpeg
+    - nginx
+    - php
+    - security
