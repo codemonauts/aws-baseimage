@@ -134,22 +134,22 @@ build {
   }
 }
 
-# arm-web-jammy-82
-source "amazon-ebs" "arm64-web-jammy-php82" {
+# arm-web-jammy-83
+source "amazon-ebs" "arm64-web-jammy-php83" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-jammy-php82_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-arm-web-jammy-php83_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "t4g.micro"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "arm64_web_jammy_82"
+    Amazon_AMI_Management_Identifier = "arm64_web_jammy_83"
   }
 }
 build {
-  name    = "arm64-web-jammy-82"
-  sources = ["source.amazon-ebs.arm64-web-jammy-php82"]
+  name    = "arm64-web-jammy-83"
+  sources = ["source.amazon-ebs.arm64-web-jammy-php83"]
 
   provisioner "shell" {
     inline = [
@@ -171,12 +171,12 @@ build {
     playbook_file = "webserver.yaml"
     extra_arguments = [ 
       "-e",
-      "php_version=8.2" 
+      "php_version=8.3" 
     ]
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "arm64_web_jammy_82"
+    identifier    = "arm64_web_jammy_83"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
