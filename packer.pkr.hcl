@@ -15,6 +15,14 @@ packer {
   }
 }
 
+# Instance types to use
+variable "amd64_instance_type" {
+  default = "c7a.large"
+}
+variable "arm64_instance_type" {
+  default = "c7g.large"
+}
+
 # Provider of the Ubuntu base images
 variable "cannonical_account_id" {
   default = "099720109477"
@@ -42,21 +50,21 @@ data "amazon-ami" "ubuntu-jammy-arm64" {
   region      = "eu-central-1"
 }
 
-# amd-web-jammy-74
+# amd64-web-jammy-php74
 source "amazon-ebs" "amd64-web-jammy-php74" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-web-jammy-php74_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-amd64-web-jammy-php74_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "t3a.micro"
+  instance_type = "${var.amd64_instance_type}"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-amd64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "amd64_web_jammy_74"
+    Amazon_AMI_Management_Identifier = "amd64-web-jammy-php74"
   }
 }
 build {
-  name    = "amd64-web-jammy-74"
+  name    = "amd64-web-jammy-php74"
   sources = ["source.amazon-ebs.amd64-web-jammy-php74"]
 
   provisioner "shell" {
@@ -84,23 +92,23 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "amd64_web_jammy_74"
+    identifier    = "amd64-web-jammy-php74"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
 
-# amd-base-jammy
+# amd64-base-jammy
 source "amazon-ebs" "amd64-base-jammy" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-amd64-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "t3a.micro"
+  instance_type = "${var.amd64_instance_type}"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-amd64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "amd64_base_jammy"
+    Amazon_AMI_Management_Identifier = "amd64-base-jammy"
   }
 }
 build {
@@ -128,27 +136,27 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "amd64_base_jammy"
+    identifier    = "amd64-base-jammy"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
 
-# arm-web-jammy-83
+# arm64-web-jammy-php83
 source "amazon-ebs" "arm64-web-jammy-php83" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-jammy-php83_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-arm64-web-jammy-php83_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "t4g.micro"
+  instance_type = "${var.arm64_instance_type}"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "arm64_web_jammy_83"
+    Amazon_AMI_Management_Identifier = "arm64-web-jammy-php83"
   }
 }
 build {
-  name    = "arm64-web-jammy-83"
+  name    = "arm64-web-jammy-php83"
   sources = ["source.amazon-ebs.arm64-web-jammy-php83"]
 
   provisioner "shell" {
@@ -176,27 +184,27 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "arm64_web_jammy_83"
+    identifier    = "arm64-web-jammy-php83"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
 }
 
-# arm-web-jammy-81
+# arm64-web-jammy-php81
 source "amazon-ebs" "arm64-web-jammy-php81" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-web-jammy-php81_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-arm64-web-jammy-php81_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "t4g.micro"
+  instance_type = "${var.arm64_instance_type}"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "arm64_web_jammy_81"
+    Amazon_AMI_Management_Identifier = "arm64-web-jammy-php81"
   }
 }
 build {
-  name    = "arm64-web-jammy-81"
+  name    = "arm64-web-jammy-php81"
   sources = ["source.amazon-ebs.arm64-web-jammy-php81"]
 
   provisioner "shell" {
@@ -224,7 +232,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "arm64_web_jammy_81"
+    identifier    = "arm64-web-jammy-php81"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
@@ -233,14 +241,14 @@ build {
 # arm-base-jammy
 source "amazon-ebs" "arm64-base-jammy" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-arm64-base-jammy_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "t4g.micro"
+  instance_type = "${var.arm64_instance_type}"
   region        = "eu-central-1"
   source_ami    = "${data.amazon-ami.ubuntu-jammy-arm64.id}"
   ssh_username  = "ubuntu"
   tags = {
-    Amazon_AMI_Management_Identifier = "arm64_base_jammy"
+    Amazon_AMI_Management_Identifier = "arm64-base-jammy"
   }
 }
 build {
@@ -267,7 +275,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "arm64_base_jammy"
+    identifier    = "arm64-base-jammy"
     keep_releases = "3"
     regions       = ["eu-central-1", "eu-west-1"]
   }
