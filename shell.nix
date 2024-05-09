@@ -2,7 +2,6 @@
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    ansible
     ansible-lint
     packer
     python311
