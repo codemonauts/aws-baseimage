@@ -2,10 +2,18 @@
 
 # Install php
 
+- name: Add extra packages for php
+  ansible.builtin.apt:
+    name:
+      - gnupg
+
+- name: Install ondrej key
+  ansible.builtin.apt:
+    deb: https://packages.sury.org/debsuryorg-archive-keyring.deb
+
 - name: Add ondrej php repo
   ansible.builtin.apt_repository:
-    repo: "ppa:ondrej/php"
-    codename: jammy
+    repo: deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ {{ ansible_distribution_release }} main
 
 - name: "Install packages for php {{ php_version }}"
   ansible.builtin.apt:

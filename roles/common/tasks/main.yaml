@@ -2,22 +2,6 @@
 
 # Install and remove common packages needed for support
 
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-
-- name: Remove unused packages
-  ansible.builtin.apt:
-    name:
-      - man-db
-      - manpages
-      - manpages-dev
-      - ntfs-3g
-      - bolt
-      - snapd
-    state: absent
-    autoremove: true
-
 - name: Install packages needed
   ansible.builtin.apt:
     name:
@@ -33,6 +17,19 @@
       - cron
       - logrotate
       - locales
+      - lsb-release
+      - ca-certificates
+    update_cache: true
+
+- name: Remove unused packages
+  ansible.builtin.apt:
+    name:
+      - man-db
+      - manpages
+      - manpages-dev
+    state: absent
+    autoremove: true
+    purge: true
 
 # locales
 
@@ -48,20 +45,11 @@
   ansible.builtin.command: locale-gen
   changed_when: true
 
-# Install AWS CLI
+# resolve instance data
 
-- name: Install pip
-  ansible.builtin.apt:
-    name: python3-pip
-
-- name: Install AWS CLI
-  ansible.builtin.pip:
-    name: awscli
-
-- name: Create a symbolic link for vim
-  ansible.builtin.file:
-    src: /usr/bin/vim.tiny
-    dest: /usr/bin/vim
-    owner: root
-    group: root
-    state: link
+- name: Add mappings to /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: |
+      169.254.169.254 instance-data
+      fd00:ec2::254 instance-data

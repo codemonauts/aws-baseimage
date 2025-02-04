@@ -1,11 +1,14 @@
 init:
-	packer init packer.pkr.hcl
+	packer init baseimage.pkr.hcl
+	packer init webserver.pkr.hcl
 
 test: init
-	packer validate packer.pkr.hcl
+	packer validate baseimage.pkr.hcl
+	packer validate webserver.pkr.hcl
 	ansible-lint
 
 build: test
-	packer build packer.pkr.hcl
+	packer build baseimage.pkr.hcl
+	packer build webserver.pkr.hcl
 
 all: build

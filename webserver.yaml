@@ -4,7 +4,7 @@
   connection: local
   become: true
   vars:
-    php_version: "8.1"
+    php_version: "8.3"
     mozjpeg_version: "4.1.1"
   roles:
     - common
