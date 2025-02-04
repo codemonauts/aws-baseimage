@@ -16,11 +16,17 @@ jobs:
         with:
           version: "latest"
 
-      - name: Init packer 
-        run: "packer init packer.pkr.hcl"
+      - name: Init base image 
+        run: "packer init baseimage.pkr.hcl"
+
+      - name: Init webserver image 
+        run: "packer init webserver.pkr.hcl"
+
+      - name: Validate base image
+        run: "packer validate baseimage.pkr.hcl"
 
       - name: Validate packer configuration
-        run: "packer validate packer.pkr.hcl"
+        run: "packer validate webserver.pkr.hcl"
 
       - name: Validate ansible playbooks
         uses: ansible/ansible-lint-action@main
