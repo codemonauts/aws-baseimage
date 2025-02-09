@@ -84,7 +84,7 @@ build {
   post-processor "amazon-ami-management" {
     identifier    = "codemonauts-amd64-bookworm-base"
     keep_releases = "3"
-    regions       = ["eu-central-1", "eu-west-1"]
+    regions       = ["eu-central-1"]
   }
 }
 
@@ -122,6 +122,6 @@ build {
   post-processor "amazon-ami-management" {
     identifier    = "codemonauts-arm64-bookworm-base"
     keep_releases = "3"
-    regions       = ["eu-central-1", "eu-west-1"]
+    regions       = ["eu-central-1"]
   }
 }
