@@ -9,7 +9,8 @@ pkgs.mkShell {
     jq
   ];
   shellHook = ''
-    packer init packer.pkr.hcl
+    packer init baseimage.pkr.hcl
+    packer init webserver.pkr.hcl
   '';
 }
 
