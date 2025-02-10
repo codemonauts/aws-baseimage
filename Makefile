@@ -5,6 +5,7 @@ init:
 test: init
 	packer validate baseimage.pkr.hcl
 	packer validate webserver.pkr.hcl
+	yamllint .
 	ansible-lint
 
 build: test

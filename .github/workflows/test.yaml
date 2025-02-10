@@ -1,7 +1,7 @@
+---
 name: Validate
 
-on:
-  - push
+on: [push] # yamllint disable-line rule:truthy
 
 jobs:
   validate:
@@ -16,10 +16,10 @@ jobs:
         with:
           version: "latest"
 
-      - name: Init base image 
+      - name: Init base image
         run: "packer init baseimage.pkr.hcl"
 
-      - name: Init webserver image 
+      - name: Init webserver image
         run: "packer init webserver.pkr.hcl"
 
       - name: Validate base image
@@ -27,6 +27,9 @@ jobs:
 
       - name: Validate packer configuration
         run: "packer validate webserver.pkr.hcl"
+
+      - name: Validate YAML
+        uses: ibiqlik/action-yamllint@v3
 
       - name: Validate ansible playbooks
         uses: ansible/ansible-lint-action@main

@@ -7,6 +7,7 @@ pkgs.mkShell {
     python311
     python311Packages.pip
     jq
+    yamllint
   ];
   shellHook = ''
     packer init baseimage.pkr.hcl
