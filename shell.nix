@@ -1,11 +1,13 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> {
+  config.allowUnfree = true;
+} }:
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
     ansible-lint
     packer
-    python311
-    python311Packages.pip
+    python313
+    python313Packages.pip
     jq
     yamllint
   ];

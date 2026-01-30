@@ -1,6 +1,5 @@
 ---
 ignore: |
-  roles/prometheus/files/generator.yml
   roles/*/templates/*
 
 extends: default
