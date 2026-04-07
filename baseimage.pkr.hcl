@@ -28,7 +28,7 @@ variable "account_id" {
   default = "136693071363"
 }
 
-data "amazon-ami" "debian-amd64-bookworm" {
+data "amazon-ami" "debian-amd64" {
   filters = {
     name                = "debian-12-amd64-*"
     root-device-type    = "ebs"
@@ -39,7 +39,7 @@ data "amazon-ami" "debian-amd64-bookworm" {
   region      = "eu-central-1"
 }
 
-data "amazon-ami" "debian-arm64-bookworm" {
+data "amazon-ami" "debian-arm64" {
   filters = {
     name                = "debian-12-arm64-*"
     root-device-type    = "ebs"
@@ -50,22 +50,22 @@ data "amazon-ami" "debian-arm64-bookworm" {
   region      = "eu-central-1"
 }
 
-# codemonauts-amd64-bookworm-base
-source "amazon-ebs" "codemonauts-amd64-bookworm-base" {
+# codemonauts-amd64-base
+source "amazon-ebs" "codemonauts-amd64-base" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-amd64-bookworm-base_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-amd64-base_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "${var.amd64_instance_type}"
   region        = "eu-central-1"
-  source_ami    = "${data.amazon-ami.debian-amd64-bookworm.id}"
+  source_ami    = "${data.amazon-ami.debian-amd64.id}"
   ssh_username  = "admin"
   tags = {
-    Amazon_AMI_Management_Identifier = "codemonauts-amd64-bookworm-base"
+    Amazon_AMI_Management_Identifier = "codemonauts-amd64-base"
   }
 }
 build {
-  name    = "codemonauts-amd64-bookworm-base"
-  sources = ["source.amazon-ebs.codemonauts-amd64-bookworm-base"]
+  name    = "codemonauts-amd64-base"
+  sources = ["source.amazon-ebs.codemonauts-amd64-base"]
 
   provisioner "shell" {
     pause_before = "10s"
@@ -82,28 +82,28 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "codemonauts-amd64-bookworm-base"
+    identifier    = "codemonauts-amd64-base"
     keep_releases = "3"
     regions       = ["eu-central-1"]
   }
 }
 
-# codemonauts-arm64-bookworm-base
-source "amazon-ebs" "codemonauts-arm64-bookworm-base" {
+# codemonauts-arm64-base
+source "amazon-ebs" "codemonauts-arm64-base" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm64-bookworm-base_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-arm64-base_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
   instance_type = "${var.arm64_instance_type}"
   region        = "eu-central-1"
-  source_ami    = "${data.amazon-ami.debian-arm64-bookworm.id}"
+  source_ami    = "${data.amazon-ami.debian-arm64.id}"
   ssh_username  = "admin"
   tags = {
-    Amazon_AMI_Management_Identifier = "codemonauts-arm64-bookworm-base"
+    Amazon_AMI_Management_Identifier = "codemonauts-arm64-base"
   }
 }
 build {
-  name    = "codemonauts-arm64-bookworm-base"
-  sources = ["source.amazon-ebs.codemonauts-arm64-bookworm-base"]
+  name    = "codemonauts-arm64-base"
+  sources = ["source.amazon-ebs.codemonauts-arm64-base"]
 
   provisioner "shell" {
     pause_before = "10s"
@@ -120,7 +120,7 @@ build {
   }
 
   post-processor "amazon-ami-management" {
-    identifier    = "codemonauts-arm64-bookworm-base"
+    identifier    = "codemonauts-arm64-base"
     keep_releases = "3"
     regions       = ["eu-central-1"]
   }
