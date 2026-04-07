@@ -9,7 +9,7 @@ jobs:
     name: Validate provisioning
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
