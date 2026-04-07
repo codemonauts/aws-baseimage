@@ -9,7 +9,7 @@ jobs:
     name: Validate provisioning
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
@@ -32,4 +32,4 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
 
       - name: Validate ansible playbooks
-        uses: ansible/ansible-lint-action@main
+        uses: ansible/ansible-lint@main
