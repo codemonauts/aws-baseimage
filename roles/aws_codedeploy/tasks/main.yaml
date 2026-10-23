@@ -2,15 +2,9 @@
 
 # Install current AWS Codedeploy agent
 
-- name: Install Codedeploy agent dependencys
-  ansible.builtin.apt:
-    name:
-      - ruby
-      - gdebi-core
-
 - name: Copy install package
   ansible.builtin.get_url:
-    url: https://aws-codedeploy-eu-central-1.s3.amazonaws.com/latest/install
+    url: https://aws-codedeploy-eu-central-1.s3.eu-central-1.amazonaws.com/latestv2/install
     dest: /tmp/codedeploy-installer
     owner: root
     group: root

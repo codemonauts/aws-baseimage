@@ -4,32 +4,36 @@ name: Validate
 on: [push] # yamllint disable-line rule:truthy
 
 jobs:
-  validate:
+  lint:
     runs-on: ubuntu-latest
-    name: Validate provisioning
+    name: Lint
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup packer
-        uses: hashicorp/setup-packer@main
-        with:
-          version: "latest"
-
-      - name: Init base image
-        run: "packer init baseimage.pkr.hcl"
-
-      - name: Init webserver image
-        run: "packer init webserver.pkr.hcl"
-
-      - name: Validate base image
-        run: "packer validate baseimage.pkr.hcl"
-
-      - name: Validate packer configuration
-        run: "packer validate webserver.pkr.hcl"
+        uses: actions/checkout@v7
 
       - name: Validate YAML
         uses: ibiqlik/action-yamllint@v3
 
       - name: Validate ansible playbooks
-        uses: ansible/ansible-lint-action@main
+        uses: ansible/ansible-lint@v26
+
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate packer (${{ matrix.arch }})
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup packer
+        uses: hashicorp/setup-packer@v3
+        with:
+          version: "latest"
+
+      - name: Setup just
+        uses: extractions/setup-just@v4
+
+      - name: Validate packer configuration
+        run: "just validate ${{ matrix.arch }}"

@@ -3,15 +3,13 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     ansible-lint
+    just
     packer
-    python311
-    python311Packages.pip
-    jq
+    python313
+    python313Packages.pip
     yamllint
   ];
   shellHook = ''
-    packer init baseimage.pkr.hcl
-    packer init webserver.pkr.hcl
   '';
 }
 

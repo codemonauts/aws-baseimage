@@ -21,12 +21,42 @@ Additionaly on top for the **webserver** images:
   * Install PHP-FPM and some PHP Modules which are used by CraftCMS
 
 ## Images build by this repo
+
 All images are public and available in eu-central-1 and eu-west-1. The *XXX* in the AMI name is the timestamp during build in the format `YYYY-MM-DD-hh-mm`.
 
-**arm64**
-* Debian Bookworm, Base (codemonauts-arm64-bookworm-base_XXX)
-* Debian Bookworm, Webserver with PHP 8.3 (codemonauts-arm64-bookworm-webserver-php83_XXX)
+```
+codemonauts-<arch>-<codename>-base_XXX
+codemonauts-<arch>-<codename>-webserver-php<version>_XXX
+```
 
-**amd64**
-* Debian Bookworm, Base (codemonauts-amd64-bookworm-base_XXX)
-* Debian Bookworm, Webserver with PHP 8.3 (codemonauts-amd64-bookworm-webserver-php83_XXX)
+`<arch>` is `amd64` or `arm64`, `<codename>` is the Debian release, `<version>` is the PHP version without the dot. The defaults live at the top of the `justfile`.
+
+## Prerequisites
+
+ * Allow direnv to run in the cloned repository.
+
+Run `just --list` to see all available recipes.
+
+## Validate
+
+``` shell
+just test amd64
+just test-all
+```
+
+## Build
+
+The webserver image builds on top of the base image, so `just build` creates both in that order:
+
+``` shell
+just build                       # asks for the architecture
+just build amd64                 # defaults from the justfile
+just build amd64 bookworm 8.3    # a different combination
+just build-all                   # both architectures
+```
+
+## Clean up old AMIs
+
+`just stale-amis` lists AMIs beyond the newest 3 of their family, `just clean-amis` deletes them after you confirm. A family is the AMI name without its timestamp, so every architecture, Debian release and PHP version is counted separately.
+
+An AMI is only offered when it is older than 14 days, is not among the newest 3 of its family, and no launch template version in this account references it. `just build` prints how many could be cleaned up but never deletes anything itself.

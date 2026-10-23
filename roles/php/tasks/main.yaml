@@ -11,9 +11,15 @@
   ansible.builtin.apt:
     deb: https://packages.sury.org/debsuryorg-archive-keyring.deb
 
-- name: Add ondrej php repo
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ {{ ansible_distribution_release }} main # yamllint disable-line rule:line-length
+- name: Sury PHP-Repository hinzufügen
+  ansible.builtin.deb822_repository:
+    name: sury-php
+    types: deb
+    uris: https://packages.sury.org/php/
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: /usr/share/keyrings/debsuryorg-archive-keyring.gpg
+    state: present
 
 - name: "Install packages for php {{ php_version }}"
   ansible.builtin.apt:
@@ -31,6 +37,7 @@
       - "php{{ php_version }}-soap"
       - "php{{ php_version }}-xml"
       - "php{{ php_version }}-zip"
+    update_cache: true
 
 - name: Delete default files
   ansible.builtin.file:

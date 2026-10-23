@@ -4,10 +4,6 @@ packer {
       source  = "github.com/hashicorp/amazon"
       version = "~> 1"
     }
-    amazon-ami-management = {
-      version = ">= 1.6.1"
-      source  = "github.com/wata727/amazon-ami-management"
-    }
     ansible = {
       source  = "github.com/hashicorp/ansible"
       version = "~> 1"
@@ -15,121 +11,83 @@ packer {
   }
 }
 
-# Instance types to use
-variable "amd64_instance_type" {
-  default = "c7a.large"
-}
-variable "arm64_instance_type" {
-  default = "c7g.large"
+# Target architecture of the AMI. No default on purpose.
+variable "arch" {
+  type = string
+
+  validation {
+    condition     = contains(["amd64", "arm64"], var.arch)
+    error_message = "The arch variable must be either amd64 or arm64."
+  }
 }
 
-# Provider of the Debian base images
-variable "account_id" {
-  default = "136693071363"
+# Debian release of the base image to build on. No default on purpose.
+variable "codename" {
+  type = string
+
+  validation {
+    condition     = contains(["bookworm", "trixie"], var.codename)
+    error_message = "The codename variable must be either bookworm or trixie."
+  }
 }
 
-data "amazon-ami" "debian-amd64-bookworm" {
+# PHP version to install. No default on purpose.
+variable "php_version" {
+  type = string
+}
+
+# Instance types to build on, per architecture
+variable "instance_types" {
+  type = map(string)
+  default = {
+    amd64 = "c7a.large"
+    arm64 = "c7g.large"
+  }
+}
+
+locals {
+  # 8.3 -> 83, as used in the AMI name
+  php_short = replace(var.php_version, ".", "")
+}
+
+# Our own base image, built by baseimage.pkr.hcl
+data "amazon-ami" "base" {
   filters = {
-    name                = "debian-12-amd64-*"
-    root-device-type    = "ebs"
-    virtualization-type = "hvm"
+    name             = "codemonauts-${var.arch}-${var.codename}-base_*"
+    root-device-type = "ebs"
   }
   most_recent = true
-  owners      = ["${var.account_id}"]
+  owners      = ["self"]
   region      = "eu-central-1"
 }
 
-data "amazon-ami" "debian-arm64-bookworm" {
-  filters = {
-    name                = "debian-12-arm64-*"
-    root-device-type    = "ebs"
-    virtualization-type = "hvm"
-  }
-  most_recent = true
-  owners      = ["${var.account_id}"]
-  region      = "eu-central-1"
-}
-
-# codemonauts-amd64-bookworm-webserver-php83
-source "amazon-ebs" "codemonauts-amd64-bookworm-webserver-php83" {
+source "amazon-ebs" "webserver" {
   ami_groups    = ["all"]
-  ami_name      = "codemonauts-amd64-bookworm-webserver-php83_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
+  ami_name      = "codemonauts-${var.arch}-${var.codename}-webserver-php${local.php_short}_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
   ami_regions   = ["eu-west-1"]
-  instance_type = "${var.amd64_instance_type}"
+  instance_type = var.instance_types[var.arch]
   region        = "eu-central-1"
-  source_ami    = "${data.amazon-ami.debian-amd64-bookworm.id}"
-  ssh_username  = "admin"
-  tags = {
-    Amazon_AMI_Management_Identifier = "codemonauts-amd64-bookworm-webserver-php83"
-  }
+  source_ami    = data.amazon-ami.base.id
+  # the base image disables the admin user, so come in as cmonauts
+  ssh_agent_auth = true
+  ssh_username   = "cmonauts"
 }
+
 build {
-  name    = "codemonauts-amd64-bookworm-webserver-php83"
-  sources = ["source.amazon-ebs.codemonauts-amd64-bookworm-webserver-php83"]
+  name    = "webserver"
+  sources = ["source.amazon-ebs.webserver"]
 
   provisioner "shell" {
     pause_before = "10s"
     inline = [
       "sudo apt-get update",
-      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
-      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y install ansible"
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade"
     ]
   }
 
   provisioner "ansible-local" {
-    playbook_dir  = "./"
-    playbook_file = "webserver.yaml"
-        extra_arguments = [ 
-      "-e",
-      "php_version=8.3" 
-    ]
-  }
-
-  post-processor "amazon-ami-management" {
-    identifier    = "codemonauts-amd64-bookworm-webserver-php83"
-    keep_releases = "3"
-    regions       = ["eu-central-1"]
-  }
-}
-
-# codemonauts-arm64-bookworm-webserver-php83
-source "amazon-ebs" "codemonauts-arm64-bookworm-webserver-php83" {
-  ami_groups    = ["all"]
-  ami_name      = "codemonauts-arm64-bookworm-webserver-php83_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
-  ami_regions   = ["eu-west-1"]
-  instance_type = "${var.arm64_instance_type}"
-  region        = "eu-central-1"
-  source_ami    = "${data.amazon-ami.debian-arm64-bookworm.id}"
-  ssh_username  = "admin"
-  tags = {
-    Amazon_AMI_Management_Identifier = "codemonauts-arm64-bookworm-webserver-php83"
-  }
-}
-build {
-  name    = "codemonauts-arm64-bookworm-webserver-php83"
-  sources = ["source.amazon-ebs.codemonauts-arm64-bookworm-webserver-php83"]
-
-  provisioner "shell" {
-    pause_before = "10s"
-    inline = [
-      "sudo apt-get update",
-      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
-      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y install ansible"
-    ]
-  }
-
-  provisioner "ansible-local" {
-    playbook_dir  = "./"
-    playbook_file = "webserver.yaml"
-        extra_arguments = [ 
-      "-e",
-      "php_version=8.3" 
-    ]
-  }
-
-  post-processor "amazon-ami-management" {
-    identifier    = "codemonauts-arm64-bookworm-webserver-php83"
-    keep_releases = "3"
-    regions       = ["eu-central-1"]
+    playbook_dir    = "./"
+    playbook_file   = "webserver.yaml"
+    extra_arguments = ["--extra-vars", "php_version=${var.php_version}"]
   }
 }
