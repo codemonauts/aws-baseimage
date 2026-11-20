@@ -33,11 +33,16 @@
       - "php{{ php_version }}-intl"
       - "php{{ php_version }}-mbstring"
       - "php{{ php_version }}-mysql"
-      - "php{{ php_version }}-opcache"
       - "php{{ php_version }}-soap"
       - "php{{ php_version }}-xml"
       - "php{{ php_version }}-zip"
     update_cache: true
+
+# opcache is compiled into the binary from php 8.5, the module package is gone
+- name: "Install the opcache module for php {{ php_version }}"
+  ansible.builtin.apt:
+    name: "php{{ php_version }}-opcache"
+  when: php_version is version('8.5', '<')
 
 - name: Delete default files
   ansible.builtin.file:
