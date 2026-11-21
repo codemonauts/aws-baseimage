@@ -1,7 +1,7 @@
 regions        := "eu-central-1 eu-west-1"
 primary_region := "eu-central-1"
 codename       := "trixie"
-php_version    := "8.3"
+php_versions   := "8.3 8.5"
 ami_prefix     := "codemonauts"
 keep_newest    := "3"
 min_age_days   := "14"
@@ -21,19 +21,25 @@ lint:
     ansible-lint
     jq empty asg-sets.json
 
-# Validate both packer templates (amd64 | arm64)
-validate arch cn=codename php=php_version: (_check-arch arch) init
-    packer validate -var arch={{ arch }} -var codename={{ cn }} baseimage.pkr.hcl
-    packer validate -var arch={{ arch }} -var codename={{ cn }} -var php_version={{ php }} webserver.pkr.hcl
+# Validate both packer templates, for one or all php versions (amd64 | arm64)
+validate arch cn=codename php='': (_check-arch arch) init
+    #!/usr/bin/env bash
+    set -euo pipefail
+    versions='{{ php }}'
+    [ -n "$versions" ] || versions='{{ php_versions }}'
+    packer validate -var arch={{ arch }} -var codename='{{ cn }}' baseimage.pkr.hcl
+    for v in $versions; do
+        packer validate -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+    done
 
 # Run all checks (amd64 | arm64)
-test arch cn=codename php=php_version: (_check-arch arch) lint (validate arch cn php)
+test arch cn=codename php='': (_check-arch arch) lint (validate arch cn php)
 
 # Run all checks for both architectures
 test-all: lint (validate "amd64") (validate "arm64")
 
-# Build base and webserver AMI, asks for the architecture if not given
-build arch='' cn=codename php=php_version:
+# Build the base AMI and one webserver AMI per php version (asks for the architecture)
+build arch='' cn=codename php='':
     #!/usr/bin/env bash
     set -euo pipefail
     arch='{{ arch }}'
@@ -51,9 +57,13 @@ build arch='' cn=codename php=php_version:
         [ -n "$arch" ] || { echo "error: aborted" >&2; exit 1; }
     fi
     just test "$arch" '{{ cn }}' '{{ php }}'
-    # the webserver image builds on the base image, so order matters
+    versions='{{ php }}'
+    [ -n "$versions" ] || versions='{{ php_versions }}'
+    # the webserver images build on the base image, so order matters
     packer build -var arch="$arch" -var codename='{{ cn }}' baseimage.pkr.hcl
-    packer build -var arch="$arch" -var codename='{{ cn }}' -var php_version='{{ php }}' webserver.pkr.hcl
+    for v in $versions; do
+        packer build -var arch="$arch" -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+    done
     stale=$(just _stale-amis | awk -F'\t' '$1 == "stale"' | grep -c . || true)
     if [ "$stale" -gt 0 ]; then
         echo
@@ -62,6 +72,16 @@ build arch='' cn=codename php=php_version:
 
 # Build the AMIs for both architectures
 build-all: (build "amd64") (build "arm64")
+
+# Build only the webserver AMIs on the existing base image (amd64 | arm64)
+build-webserver arch cn=codename php='': (_check-arch arch) (validate arch cn php)
+    #!/usr/bin/env bash
+    set -euo pipefail
+    versions='{{ php }}'
+    [ -n "$versions" ] || versions='{{ php_versions }}'
+    for v in $versions; do
+        packer build -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+    done
 
 # List AMIs beyond the newest 3 of their family
 stale-amis:
