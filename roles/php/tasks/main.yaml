@@ -7,6 +7,12 @@
     name:
       - gnupg
 
+# the libheif decoder is a separate package from debian 13 on
+- name: Add the heif decoder plugin
+  ansible.builtin.apt:
+    name: libheif-plugin-libde265
+  when: ansible_facts['distribution_major_version'] is version('13', '>=')
+
 - name: Install ondrej key
   ansible.builtin.apt:
     deb: https://packages.sury.org/debsuryorg-archive-keyring.deb
