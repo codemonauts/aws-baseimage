@@ -15,10 +15,11 @@ init:
     packer init baseimage.pkr.hcl
     packer init webserver.pkr.hcl
 
-# Lint YAML and ansible
+# Lint YAML, ansible and the ASG set catalogue
 lint:
     yamllint .
     ansible-lint
+    jq empty asg-sets.json
 
 # Validate both packer templates (amd64 | arm64)
 validate arch cn=codename php=php_version: (_check-arch arch) init

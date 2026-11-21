@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "defaults": {
+    "InstancesDistribution": {
+      "OnDemandAllocationStrategy": "prioritized",
+      "OnDemandBaseCapacity": 0,
+      "OnDemandPercentageAboveBaseCapacity": 0,
+      "SpotAllocationStrategy": "price-capacity-optimized"
+    }
+  },
+  "sets": {
+    "micro": {
+      "VCpuCount": {
+        "Min": 2,
+        "Max": 2
+      },
+      "MemoryMiB": {
+        "Min": 1024,
+        "Max": 1024
+      },
+      "InstanceGenerations": [
+        "current"
+      ],
+      "BurstablePerformance": "included",
+      "amd64": {
+        "CpuManufacturers": [
+          "amd",
+          "intel"
+        ],
+        "AllowedInstanceTypes": [
+          "t3.micro",
+          "t3a.micro",
+          "t8i.micro"
+        ]
+      },
+      "arm64": {
+        "CpuManufacturers": [
+          "amazon-web-services"
+        ],
+        "AllowedInstanceTypes": [
+          "t4g.micro",
+          "t9g.micro"
+        ]
+      }
+    },
+    "small": {
+      "VCpuCount": {
+        "Min": 2,
+        "Max": 2
+      },
+      "MemoryMiB": {
+        "Min": 2048,
+        "Max": 2048
+      },
+      "InstanceGenerations": [
+        "current"
+      ],
+      "BurstablePerformance": "included",
+      "amd64": {
+        "CpuManufacturers": [
+          "amd",
+          "intel"
+        ],
+        "AllowedInstanceTypes": [
+          "t3.small",
+          "t3a.small",
+          "t8i.small"
+        ]
+      },
+      "arm64": {
+        "CpuManufacturers": [
+          "amazon-web-services"
+        ],
+        "AllowedInstanceTypes": [
+          "t4g.small",
+          "t9g.small"
+        ]
+      }
+    },
+    "medium": {
+      "VCpuCount": {
+        "Min": 2,
+        "Max": 2
+      },
+      "MemoryMiB": {
+        "Min": 4096,
+        "Max": 4096
+      },
+      "InstanceGenerations": [
+        "current"
+      ],
+      "BurstablePerformance": "included",
+      "amd64": {
+        "CpuManufacturers": [
+          "amd",
+          "intel"
+        ],
+        "AllowedInstanceTypes": [
+          "t3.medium",
+          "t3a.medium",
+          "t8i.medium",
+          "c5a.large",
+          "c6a.large",
+          "c6i.large",
+          "c7a.large",
+          "c7i.large",
+          "c8a.large",
+          "c8i.large"
+        ]
+      },
+      "arm64": {
+        "CpuManufacturers": [
+          "amazon-web-services"
+        ],
+        "AllowedInstanceTypes": [
+          "t4g.medium",
+          "t9g.medium",
+          "c6g.large",
+          "c7g.large",
+          "c8g.large",
+          "c9g.large"
+        ]
+      }
+    }
+  }
+}

@@ -60,3 +60,43 @@ just build-all                   # both architectures
 `just stale-amis` lists AMIs beyond the newest 3 of their family, `just clean-amis` deletes them after you confirm. A family is the AMI name without its timestamp, so every architecture, Debian release and PHP version is counted separately.
 
 An AMI is only offered when it is older than 14 days, is not among the newest 3 of its family, and no launch template version in this account references it. `just build` prints how many could be cleaned up but never deletes anything itself.
+
+## ASG instance sets
+
+`asg-sets.json` is the central catalogue of default instance sets for the
+autoscaling groups of the consuming provisioning repos. This repo has no
+autoscaling groups of its own — it only holds the catalogue, the way it builds
+their base image.
+
+A set has a handle and holds the shared attributes once, with a branch per
+architecture for the CPU manufacturers and the type list:
+
+``` shell
+jq '.sets | keys' asg-sets.json
+jq '.sets.small' asg-sets.json
+```
+
+`defaults.InstancesDistribution` applies to every set that does not carry its
+own. Consumers pull the file with `just asg-sets-sync` and compare it against a
+single ASG config with `just asg-diff-set <asg> <arch> <handle>`. A repo config
+may deviate — the sets are defaults, not a contract.
+
+Two things to keep in mind when editing a set:
+
+`BurstablePerformance` must stay `included` for any set listing `t3*`/`t4g*`
+types. The AWS default is `excluded` and `AllowedInstanceTypes` does not
+override the attribute filters, so those types would drop out of the pool
+without an error.
+
+The `VCpuCount` and `MemoryMiB` ranges are a tight fit around the listed types.
+Adding a larger type without widening them makes it ineffective, again without
+an error. Verify every change:
+
+``` shell
+aws ec2 get-instance-types-from-instance-requirements \
+    --architecture-types x86_64 --virtualization-types hvm \
+    --instance-requirements file://ir.json \
+    --query 'InstanceTypes[].InstanceType'
+```
+
+The result must match `AllowedInstanceTypes` exactly.

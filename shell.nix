@@ -3,6 +3,7 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     ansible-lint
+    jq
     just
     packer
     python313
