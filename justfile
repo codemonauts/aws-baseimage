@@ -19,6 +19,8 @@ lint:
     yamllint .
     ansible-lint
     jq empty asg-sets.json
+    # instance requirements only allow the lowest-price on demand strategy
+    jq -e '[.defaults, (.sets[] | select(has("InstancesDistribution")))] | all(.InstancesDistribution.OnDemandAllocationStrategy == "lowest-price")' asg-sets.json > /dev/null
 
 # Validate both packer templates, for one or all php versions (amd64 | arm64)
 validate arch cn=codename php='': (_check-arch arch) init

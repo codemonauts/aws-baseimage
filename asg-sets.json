@@ -2,7 +2,7 @@
   "version": 1,
   "defaults": {
     "InstancesDistribution": {
-      "OnDemandAllocationStrategy": "prioritized",
+      "OnDemandAllocationStrategy": "lowest-price",
       "OnDemandBaseCapacity": 0,
       "OnDemandPercentageAboveBaseCapacity": 0,
       "SpotAllocationStrategy": "price-capacity-optimized"
