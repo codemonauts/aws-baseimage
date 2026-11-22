@@ -22,7 +22,7 @@ Additionaly on top for the **webserver** images:
 
 ## Images build by this repo
 
-All images are public and available in eu-central-1 and eu-west-1. The *XXX* in the AMI name is the timestamp during build in the format `YYYY-MM-DD-hh-mm`.
+All images are public and available in eu-central-1. The *XXX* in the AMI name is the timestamp during build in the format `YYYY-MM-DD-hh-mm`.
 
 ```
 codemonauts-<arch>-<codename>-base_XXX

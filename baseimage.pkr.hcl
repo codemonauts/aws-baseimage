@@ -11,6 +11,12 @@ packer {
   }
 }
 
+# Region the images are built in and stored. No copies to other regions.
+variable "region" {
+  type    = string
+  default = "eu-central-1"
+}
+
 # Target architecture of the AMI. No default on purpose.
 variable "arch" {
   type = string
@@ -62,15 +68,14 @@ data "amazon-ami" "debian" {
   }
   most_recent = true
   owners      = [var.account_id]
-  region      = "eu-central-1"
+  region      = var.region
 }
 
 source "amazon-ebs" "base" {
   ami_groups    = ["all"]
   ami_name      = "codemonauts-${var.arch}-${var.codename}-base_${formatdate("YYYY-MM-DD-hh-mm", timestamp())}"
-  ami_regions   = ["eu-west-1"]
   instance_type = var.instance_types[var.arch]
-  region        = "eu-central-1"
+  region        = var.region
   source_ami    = data.amazon-ami.debian.id
   ssh_username  = "admin"
 }

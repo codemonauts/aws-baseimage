@@ -1,5 +1,4 @@
-regions        := "eu-central-1 eu-west-1"
-primary_region := "eu-central-1"
+region         := "eu-central-1"
 codename       := "trixie"
 php_versions   := "8.3 8.5"
 ami_prefix     := "codemonauts"
@@ -27,9 +26,9 @@ validate arch cn=codename php='': (_check-arch arch) init
     set -euo pipefail
     versions='{{ php }}'
     [ -n "$versions" ] || versions='{{ php_versions }}'
-    packer validate -var arch={{ arch }} -var codename='{{ cn }}' baseimage.pkr.hcl
+    packer validate -var region={{ region }} -var arch={{ arch }} -var codename='{{ cn }}' baseimage.pkr.hcl
     for v in $versions; do
-        packer validate -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+        packer validate -var region={{ region }} -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
     done
 
 # Run all checks (amd64 | arm64)
@@ -60,9 +59,9 @@ build arch='' cn=codename php='':
     versions='{{ php }}'
     [ -n "$versions" ] || versions='{{ php_versions }}'
     # the webserver images build on the base image, so order matters
-    packer build -var arch="$arch" -var codename='{{ cn }}' baseimage.pkr.hcl
+    packer build -var region={{ region }} -var arch="$arch" -var codename='{{ cn }}' baseimage.pkr.hcl
     for v in $versions; do
-        packer build -var arch="$arch" -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+        packer build -var region={{ region }} -var arch="$arch" -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
     done
     stale=$(just _stale-amis | awk -F'\t' '$1 == "stale"' | grep -c . || true)
     if [ "$stale" -gt 0 ]; then
@@ -80,7 +79,7 @@ build-webserver arch cn=codename php='': (_check-arch arch) (validate arch cn ph
     versions='{{ php }}'
     [ -n "$versions" ] || versions='{{ php_versions }}'
     for v in $versions; do
-        packer build -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
+        packer build -var region={{ region }} -var arch={{ arch }} -var codename='{{ cn }}' -var php_version="$v" webserver.pkr.hcl
     done
 
 # List AMIs beyond the newest 3 of their family
@@ -153,22 +152,22 @@ _stale-amis:
         | sort -t$'\t' -k3,3r
     }
 
-    # image ids referenced by any launch template version in the primary region
+    # image ids referenced by any launch template version
     in_use=$(
-        for lt in $(aws ec2 describe-launch-templates --region {{ primary_region }} \
+        for lt in $(aws ec2 describe-launch-templates --region {{ region }} \
                 --query 'LaunchTemplates[].LaunchTemplateId' --output text); do
-            aws ec2 describe-launch-template-versions --region {{ primary_region }} \
+            aws ec2 describe-launch-template-versions --region {{ region }} \
                 --launch-template-id "$lt" \
                 --query 'LaunchTemplateVersions[].LaunchTemplateData.ImageId' \
                 --output text
         done | tr '\t' '\n' | awk 'NF && $0 != "None"' | sort -u
     )
 
-    # the primary region decides what to keep; other regions mirror it by name
+    # names to keep: referenced by a launch template, or among the newest
     # keep the newest per family, not per region: this repo holds many
     # families at once (base/webserver x arch x codename x php)
     keep_names=$(
-        images {{ primary_region }} strict \
+        images {{ region }} strict \
         | awk -F'\t' -v keep={{ keep_newest }} -v inuse="$in_use" '
             BEGIN { split(inuse, u, "\n"); for (i in u) used[u[i]] = 1 }
             {
@@ -178,28 +177,26 @@ _stale-amis:
             }'
     )
     legacy_keep=$(
-        images {{ primary_region }} legacy \
+        images {{ region }} legacy \
         | awk -F'\t' -v inuse="$in_use" '
             BEGIN { split(inuse, u, "\n"); for (i in u) used[u[i]] = 1 }
             $1 in used { print $2 }'
     )
 
-    for region in {{ regions }}; do
-        for kind in strict legacy; do
-            [ "$kind" = strict ] && keep="$keep_names" || keep="$legacy_keep"
-            [ "$kind" = strict ] && label=stale || label=legacy
-            images "$region" "$kind" \
-            | awk -F'\t' -v now="$now" -v minage={{ min_age_days }} -v region="$region" \
-                  -v kn="$keep" -v label="$label" '
-                BEGIN { split(kn, k, "\n"); for (i in k) if (k[i] != "") keep[k[i]] = 1 }
-                $2 in keep { next }
-                {
-                    cmd = "date -d \"" $3 "\" +%s"; cmd | getline ts; close(cmd)
-                    age = int((now - ts) / 86400)
-                    if (age < minage) next
-                    printf "%s\t%s\t%s\t%s\t%s\n", label, region, $1, $2, age
-                }' | sort -t$'\t' -k5,5nr
-        done
+    for kind in strict legacy; do
+        [ "$kind" = strict ] && keep="$keep_names" || keep="$legacy_keep"
+        [ "$kind" = strict ] && label=stale || label=legacy
+        images '{{ region }}' "$kind" \
+        | awk -F'\t' -v now="$now" -v minage={{ min_age_days }} -v region='{{ region }}' \
+              -v kn="$keep" -v label="$label" '
+            BEGIN { split(kn, k, "\n"); for (i in k) if (k[i] != "") keep[k[i]] = 1 }
+            $2 in keep { next }
+            {
+                cmd = "date -d \"" $3 "\" +%s"; cmd | getline ts; close(cmd)
+                age = int((now - ts) / 86400)
+                if (age < minage) next
+                printf "%s\t%s\t%s\t%s\t%s\n", label, region, $1, $2, age
+            }' | sort -t$'\t' -k5,5nr
     done
 
 # Fail on unsupported architectures
