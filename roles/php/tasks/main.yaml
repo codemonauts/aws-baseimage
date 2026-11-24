@@ -50,6 +50,14 @@
     name: "php{{ php_version }}-opcache"
   when: php_version is version('8.5', '<')
 
+- name: Add the health check pool
+  ansible.builtin.copy:
+    src: health.conf
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/health.conf"
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Delete default files
   ansible.builtin.file:
     path: '{{ item }}'
